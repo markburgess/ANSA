@@ -1,0 +1,189 @@
+\documentclass{slides}
+
+\title{Week 4: Configuration management}
+\usepackage{psfig}
+
+\begin{document}
+\maketitle
+
+\slide{Apply modelling to a case we know...}
+
+Hardware are software configuration.
+\begin{itemize}
+\item Set up
+\item Maintenance
+\end{itemize}
+
+To model this, we use our two approaches:
+\begin{itemize}
+\item Discrete: each change is an operation that transforms a state $q$ into a new state $q'$, by some transition
+matrix.
+\item Continuous: look at the long-term trends $q(t)$ and find the rates at which changes happen. What does that mean about the need for management?
+\end{itemize}
+
+Changes occur:
+\begin{itemize}
+\item By us (intentional change)
+\item By accident (random error)
+\end{itemize}
+Later we shall relate changes to information theory in order to discuss reliability.
+
+
+\slide{Discrete configuration (section 15.2)}
+
+Imagine that we represent file objects (high level) by a vector:
+$$
+\vec q = \left(
+\begin{array}{c}
+q_1\\
+q_2\\
+q_3\\
+\end{array}
+\right)
+$$
+where e.g. $q_1$ is a file, $q_2$ is a process, $q_3$ is an access permission etc.
+We can make any abstraction we like.
+
+To make a change $q\rightarrow q'$, we need a {\em matrix} or operator.
+This is just one representation of the problem. There might be others.
+Actually we don't {\em need} a representation, it is enough to use algebra:
+$$
+\vec q_{fixed} = \hat O\,\vec q_{broken}
+$$
+i.e.
+
+$$
+\left(
+\begin{array}{c}
+q_1'\\
+q_2'\\
+q_3'\\
+\end{array}
+\right) =
+\left(
+\begin{array}{ccc}
+? & ? & ?\\
+? & ? & ?\\
+? & ? & ?\\
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+q_1\\
+q_2\\
+q_3\\
+\end{array}
+\right)
+$$
+
+Perhaps we can think of other representations. Matrices are easy to work with,
+provided the number of rows is small!
+
+The power is that we have a way of proving things on paper.
+
+\slide{Operators}
+
+Each change or repair is an operation mediated by operator $\hat O$.
+
+Suppose we start with a system `out of the box', in state $q_0$. We
+decide what we want and then set this up by performing a string of
+operations on it, in order to obtain a policy state.
+$$
+\vec q_{policy} = \hat O_n ... \hat O_3\hat O_2\hat O_1\; \vec q_0.
+$$
+or, equivalently
+$$
+\vec q_{policy}^{\rm T} = \vec q_0^{\rm T} \hat O_1^{\rm T} \hat O_2^{\rm T} ...\hat O_n^{\rm T}.
+$$
+e.g. $\hat O_1$ is edit /etc/passwd, $O_2$ is `install software', etc..
+
+This notation allows us to discuss the algebra of changes.
+
+\slide{Ordering}
+
+We have to be careful. Do the operators commute? (Is order important?)
+$$
+[\hat O_1,\hat O_2] = \hat O_1\hat O_2 - \hat O_2\hat O_1 = ?
+$$
+If this is zero, order does not matter. If non-zero, we might get the wrong
+answer unless the order is guaranteed.
+
+e.g. The cfengine philsophy tries to provide operators that commute. The IsConf
+philosophy says, reset the machine back to $q_0$ and remember the order. These
+two approaches are not as different as they sound.
+
+\slide{Convergence}
+
+To automate the configuration maintenance we would like to be able to
+apply `dumb operations' $\hat C$ repeatedly. This means we place additional
+restrictions on the operators. 
+
+Immunity model says: create an operator that takes us from any state to our
+policy state, and no further! i.e. if we apply operator to a non-policy state,
+we get the policy state. If we apply it to the policy state, nothing happens.
+
+$$
+\hat C \vec q_{broken} = \vec q_{policy}
+$$
+
+$$
+\hat C \vec q_{policy} = \vec q_{policy}
+$$
+
+This is called convergence.
+
+e.g. $\hat C$ is "add mark to passwd file if user mark does not already exist".
+
+What is new is that the operators need to ``observe'' the state of the system
+before acting.
+
+\slide{Continuous maintenance (chapter 16)}
+
+Make general statements about the rate of damage vs the rate of repair.
+How quickly do we have to act to maintain trends in behaviour, i.e. policy?
+
+We use a {\em local averaging procedure} to find a continuum picture.
+This only works for numerical variables!
+
+Divide time up into regions and use average value in a region as the trend. 
+Interpolate a smooth curve through these (see fig. 16.1). This is the picture
+we see approximately when we zoom out and look at long times.
+i.e. we approximate the complex form by a much simpler form --  we suppress
+details in order to achieve clarity!
+
+A change in each region of the system can be written relative to the local mean value
+$\langle q\rangle_t$:
+$$
+q(t) = \langle q\rangle_t + \delta q
+$$
+i.e. signal = trend + flucuation.
+
+\slide{The maintenance theorem}
+
+This is a complicated argument to say something simple: we want to manage
+systems based on their long-term trends, not on micromanaging every fluctuation.
+(Micro-management requires system redesign, we can not call it ``management''!)
+
+{\em Question: can we apply this to manage systems on Mars, where the communication interval is about 5-20 minutes?}
+
+The theorem says that we should associate policy with $ \langle q\rangle_t$, i.e.
+the average state. We should allow some `slack' into the policy because we cannot
+define the precise state realistically. So we define policy as the acceptable
+trends in sytsem development, which means we allow a slack of the order $\delta q$.
+
+Now, to ensure that the system does not deviate by more than $\delta q$, we need to
+repair the change within a time $\Delta t$, where:
+$$
+\delta q = \frac{dq}{dt}\delta t \ll q
+$$
+e.g. security policy might be adapting slowly over weeks (small $dq/dt$), but a
+rapid change $\delta q$ should be repaired quickly to maintain the integrity
+of the policy.
+
+We can formalize these arguments and say something about the how hard we have to
+work to keep a system within certain bounds.
+
+The continuum picture is a picture of fuzzy regulation (this is what we really
+mean by management) not of crystalline perfection.
+
+\end{document}

@@ -1,0 +1,137 @@
+\documentclass{slides}
+
+\title{Week 3: From the discrete to the continuous}
+\usepackage{psfig}
+
+\begin{document}
+\maketitle
+
+Chapters 5 and 8 in the book.
+
+We use two kinds of descriptions of phenomena:
+
+\begin{enumerate}
+\item {\bf Continuous}: infinitely detailed, e.g. probabilities $\in [0,1]$.
+\item {\bf Discrete}: countable, discrete variables e.g. $q \in\{windows,linux,mac\}$. (NB Discrete $\not =$ discreet!)
+\end{enumerate}
+
+Sometimes we use the historical phrases
+
+\begin{enumerate}
+\item Analogue.
+\item Digital.
+\end{enumerate}
+
+The values we measure in an experiment belong to either discrete or continuous sets.
+
+\slide{Measurement}
+
+We associate a value $q \in \{ ... \}$ with a time or a location e.g. $t \in \{....\}$.
+
+Pairs of measurements and times belong together: $(q_1,t_1), (q_2,t_2), ...$.
+
+These form a mapping from time to measured values $q$.
+
+\psfig{file=mapping.eps,width=10cm}
+
+\slide{Mapping}
+
+\begin{enumerate}
+\item Continuous: we combine the pairs into a smooth function $(q_1,t_1), (q_2,t_2), ... \rightarrow  q(t)$.
+
+\item Discrete: an example of this is Perl's associative arrays:
+\begin{verbatim}
+$array{t1} = q1;
+$array{t2} = q2;
+\end{verbatim}
+etc.
+$t$ is called a parameter, or the ``address'' of the measured value.
+\end{enumerate}
+
+\slide{Sets}
+
+Operations to sub-classify or cross-classify sets, based on Boolean calculus, Venn diagrams:
+
+e.g. intersection between input and output sets: $I \cap O$ (represents transmitted information - what the input and output have in common).
+
+\psfig{file=venn1.eps,width=10cm}
+
+Union $I \cup O$ is the whole region.
+
+
+\slide{Changes/transitions}
+
+Call an observed value a state (property) of the system. How do states change?
+
+\begin{enumerate}
+\item Continuous: this is a great simplification that enables us to see general trends, by
+ignoring small details. This was Newton's great achievement -- the continuum approximation:
+we can define gradients or derivatives,
+$$
+\frac{dq}{dt} = \lim{dt\rightarrow 0} \frac{q(t+dt)-q(t)}{dt}.
+$$
+This gives us simple algebraic forms that are easy to work with and to write down.
+(Why keep complicated tables of data if we don't have to?)
+
+\item Discrete: Changes do not always happen in regular patterns at regular intervals, e.g.
+random arrivals. Then we have no choice but to look at transition matrices:
+$$
+(q_1,t_1) \rightarrow  (q_2,t_2)\rightarrow  (q_3,t_3) ...
+$$
+
+\end{enumerate}
+
+\slide{Determinism}
+
+The probability of changing from state $q_1$ into state $q_2$ is
+$$
+P(q_2|q_1) = 
+\left(
+\begin{array}{cccc}
+. & . & . & .\\
+. & . & . & .\\
+. & . & . & .\\
+. & . & . & .\\
+\end{array}
+\right)
+$$
+This is a stochastic graph or transition matrix. If the probabilities are all 1 or 0 then
+the system is said to be {\em deterministic}, i.e. absolutely predictable.
+
+
+\slide{Modelling change}
+
+
+
+\begin{enumerate}
+\item Continuum approximation: if we can simplify and write down a familar function,
+e.g. $\sin(\omega t)$ for waves etc, this is very easy to work with. Models are compact and
+we have all the tools of continuous mathematics at play with,.
+
+This is usually possible as the numbers of observations become very large. A model is successful
+if our fitted function $q(t)$ agrees with observations with only small deviations.
+
+\item Discrete: Small primitive change processes have to be described in `jumps'.
+We use graphs or language theory, or automata (state machines).
+
+Specifying discrete transitions is tedious and quickly becomes impractical unless it can
+be automated.
+\end{enumerate}
+
+\slide{Finite state machines}
+
+Consists of a set of states, an alphabet and a transition matrix (plus some details).
+i.e. it is a graph of nodes, and labelled edges.
+
+\slide{Language short cuts}
+
+The regular languages are representable by finite state machines.
+We can represent {\em classes} of discrete changes using {\em regular expressions},
+e.g. valid TCP sequences:
+\begin{verbatim}
+  [SYN][ACK][DATA_1][DATA_2]....[FIN][ACK]  
+= [SYN][ACK][DATA_1].*[FIN][ACK]
+\end{verbatim}
+The $\cdot$ means `any symbol' and the Kleene star $*$ means `any number of'.
+
+\end{document}

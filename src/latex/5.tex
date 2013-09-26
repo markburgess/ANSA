@@ -1,0 +1,121 @@
+\documentclass{slides}
+
+\title{Week 2: Experiment, observation, uncertainty}
+\usepackage{psfig}
+
+\begin{document}
+\maketitle
+
+
+Data collection
+\begin{itemize}
+\item Observation, characterization
+\item Identify phenomena
+\item Test hypothesis
+\end{itemize}
+Two kinds of observation:
+\begin{itemize}
+\item Quantitative - numerical
+\item Qualitative - is it red or brown?
+\end{itemize}
+
+
+Data are a combination of measured values and the time-place at which they were measured.
+e.g a time-series from a fixed computer (location). (see figure 3.1 in book)
+
+We might want to compare several time-series belonging to different computers (locations).
+
+\slide{``Errors''}
+
+Observation involves uncertainty and error.
+
+Random error: mistakes and environmental factors.
+
+Systematic error: faulty equipment, faulty experimenter!
+
+We take several measurements of each value for redundancy, to improve our certainty if possible.
+\begin{itemize}
+\item Scatter - uncertainty in value.
+\item Jitter - uncertainty in time.
+\end{itemize}
+
+\slide{Repeated measurements}
+
+If we plot values of repeated measurements 3 things can happen:
+\begin{enumerate}
+\item Always get the same value (good - probably right) (fig 3.4)
+\item Get a distribution of values with a stable average / expectation value. (fig 3.6)
+\item Get completely random ``noise''. (fig 3.5)
+\end{enumerate}
+
+The profile in the third case is almost always {\it assumed} to be a ``normal''
+of Gaussian distribution, but we should not take that for granted. It depends on the reason
+for the random variation.
+
+We can use the {\it standard deviation} as a measure of the scatter. (The Root Mean Square (RMS) value.)
+
+\vspace{1cm}
+A picture of outgoing DNS lookups, over a measured week (in hours):
+
+\vspace{1cm}
+
+\psfig{file=dns.eps,width=14cm}
+
+\vspace{1cm}
+
+A picture of the distibution of values of system load average:
+
+\psfig{file=loadav.eps,width=14cm}
+
+A picture of some distributions of scattered values
+\vspace{1cm}
+
+\psfig{file=dists.eps,width=14cm}
+
+\slide{Error bars}
+
+When repeating a series of measurements you indicate all the measured values either by plotting
+the scatter, or (more commonly) by plotting their average value $\overline q$ and standard deviation $\sigma$ as error bars.
+
+\slide{Random variables}
+
+A variable with a random part can be decomposed as a slowly varying part and a fluctuation (noise)
+part:
+$$
+q = \langle q\rangle + \delta q.
+$$
+The LHS is the real value, and the RHS is the decomposition into $\langle q\rangle$
+expected value and $\delta q$ fluctuations.
+
+
+\slide{Combining independent error sources}
+
+If we have a multivariate function $S(x,y,z,...)$ and we measure $x,y,z$ to calculate $S$,
+with uncertainty $\Delta x,\Delta y, \Delta z$, the uncertainty in computed value $\Delta S$
+is:
+
+$$
+\Delta S = \sqrt{\left(\frac{\partial S}{\partial x}\right)^2\Delta x^2
++\left(\frac{\partial S}{\partial y}\right)^2\Delta y^2
++\left(\frac{\partial S}{\partial z}\right)^2\Delta z^2
++\ldots
+}
+$$
+
+\slide{Looking for patterns}
+
+We are looking at data to try to find plausible pathways for cause-effect relationships. 
+
+Other tools:
+\begin{itemize}
+\item Fourier analysis: tells us how periodic processes combine into patterns.
+\item Correlations: two signals or time-series have ``similar'' behaviour, but we
+cannot say if one is the cause of the other, of whether they have a common cause.
+\item Linear relationships.
+\item Log-log relationships.
+\item Log-linear relationships.
+\end{itemize}
+These give us clues, but they do not tell us about causes. We need to formulate
+hypotheses.
+
+\end{document}

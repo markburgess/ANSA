@@ -1,0 +1,171 @@
+\documentclass{slides}
+
+\title{Week 8: Information and Integrity}
+\usepackage{psfig}
+
+\begin{document}
+\maketitle
+
+
+\slide{Distributions}
+
+Chap. 9
+Information theory provides a model for communication, noise and {\em work}!
+Describes the properties of statistical distributions .
+
+Distributions occur in:
+\begin{itemize}
+\item Categorization/classification
+\item Symbolism (A/D and D/A conversion)
+\item Variation of ``signals''
+\item Distribution of resources (optimization)
+\item Randomness
+\item Communication (discrete)
+\end{itemize}
+
+\slide{The ``Rosetta-Stone''}
+
+The essence of information theory lies in this picture:
+
+\psfig{file=digits.eps,width=6cm}
+\psfig{file=histo.eps,width=6cm}
+
+Digitization, symbolism, classification and the average properties
+of the messages summarized by the frequency distribution.
+
+\slide{Information}
+
+Definition is somewhat counter-intuitive. Consider a binary
+message of length N. We can draw it as a path through a grid
+with unit vectors for the two binary symbols:
+
+\psfig{file=1fig5.eps,width=10cm}
+
+Imagine this is downtown Manhatten and you lose your keys
+on the way home from the pub.
+
+\slide{From hoplessness to uncertainty..}
+
+Total number of paths is a measure of the hopelessness $h$:
+$$
+h = \frac{(N(0)+N(1))!}{N(0)!N(1)!}
+$$
+where $N=N(0)+N(1)$.
+Define the uncertainty as the size of a coded-message per unit length of
+original-message needed to describe the exact (ordered) path amongst all
+other possibilities of the same length.
+$$
+H = \log(h)/N
+$$
+Paradoxically this uncertainty also tells us how much information is needed
+to describe the exact message.
+
+$H$ is uncertainty, information -- called the Shannon entropy.
+We can show that, for a $C$ digit alphabet:
+$$
+H = -\sum_{i=1}^C p_i \log_m p_i.
+$$
+
+\slide{Entropy}
+
+$p_i=n_i/N$ is the probability of measuring digit $i$. We get this from our Rosetta-Stone picture.
+
+No memory of the actual sequence is in the value of $H$. Just as when we measure the
+weight of the bunch of red,green and yellow applies, the weight does not care about
+the classification, even though the different classes might contribute differently
+to the weight.
+
+Entropy is minimum when one of the symbols is dominant: $p_{i=j}=1, p_{i\not =j}=0$.
+Then $H_{min}=\log 1 = 0$.
+
+Entropy is maximum when all symbols are equally present: $p_i=1/C$. Then $H_{max}=\log_m(C)$.
+
+If $m=2$, the value is measured in bits per original-symbol.
+
+
+\slide{Properties of Entropy}
+
+$H$ provides a theoretical lower limit on the length per origianl
+symbol to which we can compress a message. (see section 9.9)
+
+Entropy tells us how ``flat'' or well distributed a message is. 
+So it can tell us about optimal load-balancing of resources.
+
+\slide{Application}
+
+See section 9.11. Find the most evenly spread distribution of
+categories in alphabet $\Sigma$ subject to the constraint $f(p)=\chi$.
+
+We use the method of Lagrange multipliers to solve for $p_i$.
+
+$$
+L = H(p_i) - \alpha \left( \sum_i p_i-1\right) -\beta\left(f(p_i)-\chi\right)
+$$
+We solve for the maximum entropy:
+$$
+\frac{\partial L}{\partial p_i} = \frac{\partial L}{\partial\alpha} = \frac{\partial L}{\partial\beta}=0.
+$$
+
+
+\slide{Mutual information transfer}
+
+Section 9.7.
+Transfer symbols from an alphbet from one place to another (from input
+to alphabet).
+
+Joint probability $p(I,O)_{ij}$ matrix of sending symbols $i$ at input
+and receiving $j$ at output. If all is perfect, this is the identity matrix.
+Off-diagonal elements represent noise and distortion.
+
+The information transmitted over time per original-symbol is:
+$$
+H(I;O) = \sum_{ij} p_{ij} \log_m \frac{p_{ij}(I,O)}{p_i(I)p_j(O)}
+$$
+Note that this contains probabilities from the input, the communications channel
+and from the output, so it covers errors that occur throughout the whole process.
+
+
+\slide{Knowledge}
+
+We believe we know something if we can categorize it, put something
+in the right ``box''. Information tells us therefore something about
+knowledge management, and complexity.
+
+\slide{Information in a continuous signal}
+
+Imagine a continuum of signals, with Gaussian distributed noise about a mean
+value. The distribution of signal/noise is $p(q)$. (See 15.6)
+$$
+p(q \sim e^{-q^2/\sigma})
+$$
+Find the maximum entropy distribution
+$$
+H = - \int dq p(q) \log_2 p(q).
+$$
+With the constraint
+$$
+\langle q^2\rangle = \frac{1}{\Delta t} \int_0^{\Delta T} q^2(t)dt = P
+$$
+and $P=S+N$ (see lecture 2: $q=\langle q\rangle+\delta q$) is the constant total power of the signal, split into signal $S$ and noise $N$.
+When we find the Shannon entropy, we get the well-known formula:
+$$
+H = \frac{1}{2}\log_2\left(1+\frac{S}{N}\right),
+$$
+for each signal frequency. So the double-sampled channel capacity $C =
+2BH$ for bandwidth $B$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

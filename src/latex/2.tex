@@ -1,0 +1,214 @@
+\documentclass{slides}
+
+\title{Week 10: Workflow and scalability}
+\usepackage{epsfig}
+
+\begin{document}
+\maketitle
+
+
+\slide{Work- Chapter 18}
+
+
+
+Last couple of weeks we have identified work with information and its flow.
+
+Probabilistic process.
+
+\begin{itemize}
+\item Maintenance/repair
+\item Tasks/schedules
+\end{itemize}
+
+Now extend this to talk about rough flow approximation, using the
+Ohm's law idea.
+
+\slide{Reliability}
+
+A measure that is commonly used (especially to pull wool over eyes in marketing).
+
+$$
+\rho = {\rm Reliability} = \frac{mean~uptime}{total~time}
+$$
+
+This is analogous to the utilization. Assuming  no gaps in time-line, we can write:
+\begin{itemize}
+\item MTBF (Mean time before failure)
+\item MTTR (Mean time to repair)
+\end{itemize}
+$$
+\rho = \frac{MTBF}{MTBF+MTTR}
+$$
+
+\slide{Flow approximation}
+
+
+Let flow by $I$ (like a current).
+$$
+Rate~ of~ service = \frac{demand/pressure}{failures} \left( I = \frac{V}{R}\right)
+$$
+Assume a basic maximum rate of work in some server/worker:
+$$
+I \le I_{\rm max}
+$$
+Then we can see that the flow is probabilistic by saying:
+$$
+I = p\; I_{\rm max}
+$$
+where $p$ is the probability of successful service (no failures), 
+or $1-p$ is the probability of a fault.
+
+
+
+The Ohm's law analogy is also appropriate since all devices require
+electrical power. Power and generated heat limit workflow in a dependency
+chain.
+\begin{verbatim}
+   Power -> Cooling -> Service 
+     ^                    |
+     |                    |
+   Demand ----------------       
+\end{verbatim}
+
+Now let us show that in this long-time statistical, average approximation,
+we can always think of service levels, faults and successes in terms of
+this simple flow picture -- under the same limitations of long-times.
+
+\slide{Unreliable/ad-hoc theorem}
+
+Theorem 18.5.1.
+
+A fixed network with unreliable components can be represented as an unreliable
+network with reliable components, on average.
+
+Recall the connectivity (from lecture 7). Replace the 1,0 in $\vec h$ and adjacency
+matrix $A$, with the probability $p$ to get an `expected' result.
+
+$$
+\langle\chi\rangle = \frac{1}{N(N-1)}{\vec h}^T \langle A \rangle \vec h
+$$
+
+\slide{Demo, for 3 hosts...}
+
+We can always move the probabilities into the adjacency:
+\begin{eqnarray}
+  \left (
+    \begin{array}{c}
+      p_1 \\ 
+      p_2 \\ 
+      p_3 \\ 
+    \end{array}
+  \right )^{\rm T}
+\left (
+    \begin{array}{cccc}
+      0 & 1 & 1  \\ 
+      1 & 0 & 1  \\ 
+      1 & 1 & 0  \\
+    \end{array}
+  \right )
+  \left (
+    \begin{array}{c}
+      p_1 \\ 
+      p_2 \\ 
+      p_3 \\ 
+    \end{array}
+  \right )
+=\nonumber\\
+  \left (
+    \begin{array}{c}
+      1 \\ 
+      1 \\ 
+      1 \\ 
+    \end{array}
+  \right )^{\rm T}
+\left (
+    \begin{array}{cccc}
+      0 & p_1p_2 & p_1p_3  \\ 
+      p_2p_1 & 0 & p_2p_3  \\ 
+      p_3p_1 & p_3p_2 & 0  \\
+    \end{array}
+  \right )
+  \left (
+    \begin{array}{c}
+      1 \\ 
+      1 \\ 
+      1 \\ 
+    \end{array}
+  \right ).\nonumber 
+\end{eqnarray}
+
+
+Note $p_1p_2$ is $p(1~ {\tt AND}~ 2)$
+Can therefore handle everything like an ad-hoc network.
+
+\slide{Workflow architectures}
+
+We can use this justification of the flow picture to discuss
+scalability of systems.
+
+The models 1-6 in the book describe how the workflow current is
+transported through bottlenecks.
+
+Use generalized Kirchoff's laws to look at workflow.
+
+\slide{Star models}
+
+Model 1, star configuration with controller capacity $C$:
+$$
+C = I_{tot} = I_1+I_2 + ... + I_N = N I_1.
+$$
+So the `attention' given to each host is 
+$$
+I_i = \frac{C}{N}.
+$$
+As $N\rightarrow \infty$, this becomes infinitesimal, so the amount of
+maintenance we can do goes to zero.
+
+\psfig{file=mod1.eps,width=8cm}
+
+Surprisingly if we make the hosts unreliable, this does not scale
+any differently, since any hosts that are down free resources that can be
+deployed elsewhere.
+
+\slide{Everyone for himself models}
+
+Models 3-6 all scale independently of $N$, even though there is
+much freedom in where we place authority.
+
+\psfig{file=mod3.eps,width=6cm}
+
+\slide{What is scaling?}
+
+People say things like: ``This doesn't scale''
+
+We should say how things scale as a function of $N$.
+
+Given a ratio $C/N$, it does not matter now big $N$ is if we can make
+$C$ large enough. But do we really want a supercomputer with 10,000
+interfaces to manage SNMP for 10,000 nodes? Or is it better to choose
+a different architecture to distribute load?
+
+The fact that we can have centralized policy authority or completely
+decentralized peer-to-peer anarchy, in scalable models, tells us that
+we do not need to choose centralized workflow schemes in order to have
+centralized control. This is important.
+
+
+\slide{Redundancy folk-theorem}
+
+Coponent level redundancy is always at least as good as system level
+redundancy.
+
+\psfig{file=folkth.eps,width=15cm}
+
+We see this intuitively in the figure. Consider what happens if
+one of the components fails. What is the total throughput?
+
+\slide{Graph theory}
+
+We can use the centrality concept to find the resource bottlenecks
+in a system and plan our solutions. Again, if we can solve the workflow
+problem, we can design an authority model separately.
+
+
+\end{document}

@@ -1,0 +1,381 @@
+
+\documentclass{beamer}
+
+\newtheorem{myrule}{Rule}
+
+\def\beq{\begin{eqnarray}}
+\def\eeq{\end{eqnarray}}
+\def\2{\frac{1}{2}}
+
+
+
+\mode<presentation>
+{
+ \usetheme{Warsaw}
+%\usecolortheme[rgb={0,0.7,0.1}]{structure}
+%  \usetheme{default}
+%  \usetheme{Boadilla}
+%  \usetheme{Madrid}
+%  \usetheme{Pittsburg}
+%  \usetheme{Boadilla}
+
+  % or ...
+
+
+  \setbeamercovered{transparent}
+  % or whatever (possibly just delete it)
+}
+
+
+\usepackage{epsfig}
+\newtheorem{axiom}{Axiom}
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+\title[Game Theory...] % (optional, use only with long paper titles)
+{Game Theory - Decision Formulation for Management}
+
+
+\author[] % (optional, use only with lots of authors)
+{MB}
+% - Give the names in the same order as the appear in the paper.
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+\institute[Oslo University College] % (optional, but mostly needed)
+{
+  Department of Computer Science\\
+  Oslo Univeristy College
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+}
+
+\date[MS007A] % (optional, should be abbreviation of conference name)
+{November 2006}
+
+\subject{Game Theory - Decision Formulation for Management}
+% This is only inserted into the PDF information catalog. Can be left
+% out. 
+%\usecolortheme{beetle}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Zero-sum games}
+
+\begin{itemize}
+\item Solved by saddlepoint, minimax theorem (von Neumann).
+
+\item Take the payoff matrix for any one of the players (e.g. $\Pi_1)$.
+We compare:
+
+\beq
+\max_1\min_2 \Pi_1 &\equiv& v_1\\
+\min_2\max_1 \Pi_1 &\equiv& v_2
+\eeq
+
+\item If $v_1 = v_2$ there is a pure strategy solution, i.e.
+a ``best'' answer. 
+
+\item Else there is a mixture of strategies for
+both players that yields an equilibrium.
+
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example - zero sum}
+
+Let
+$$
+\Pi_1 = - \Pi_2 = \left(
+\begin{array}{ccc}
+1 & -3 & -2\\
+2 & 5 & 4\\
+2 & 3 & 2\\
+\end{array}
+\right)
+$$
+$$
+\max_\updownarrow\min_\leftrightarrow \Pi_1 = \max_\updownarrow \left(
+\begin{array}{c}
+-3\\
+2\\
+2\\
+\end{array}
+\right) = 2
+$$
+
+$$
+\min_\leftrightarrow \max_\updownarrow\Pi_1 = \min_\leftrightarrow (2,5,4) = 2
+$$
+Thus $v_1=v_2=2$ and the relevant strategies are: 
+$$(\updownarrow,\leftrightarrow) =(2,1) or (3,1)$$
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Garbage collection game}
+\begin{itemize}
+\item Users want to keep everything. 
+\item Systems need to forget data!
+\end{itemize}
+
+
+\begin{center}
+\small
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Users/System & Ask to tidy & Tidy by date & Tidy above & Quotas\\
+             &             &              & Threshold  &       \\
+\hline
+Tidy when asked & $\pi(1,1)$ & $\pi(1,2)$ & $\pi(1,3)$ & $\pi(1,4)$\\
+\hline
+Never tidy & $\pi(2,1)$ & $\pi(2,2)$ & $\pi(2,3)$ & $\pi(2,4)$\\
+\hline
+Conceal files & $\pi(3,1)$ & $\pi(3,2)$ & $\pi(3,3)$ & $\pi(3,4)$\\
+\hline
+Change timestamps & $\pi(4,1)$ & $\pi(4,2)$ & $\pi(4,3)$ & $\pi(4,4)$\\
+\hline
+\end{tabular}
+\end{center}
+
+Payoff -- mixture of bytes and social satisfaction...
+\begin{eqnarray}
+\pi = \pi_r({\rm resources}) + \pi_s({\rm satisfaction}).
+\end{eqnarray}
+
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Dominated strategies}
+
+Sometimes the payoff matrix can be simplified 
+for both players if one
+of the players has a weak strategy, i.e. one that there is no reason to play
+because it performs worse than all others.
+
+e.g.
+
+$$
+\left(
+\begin{array}{ccc}
+50 & -10 & -20\\
+20 & 40 & -44\\
+0 & -10 & -40
+\end{array}
+\right)
+\rightarrow
+\left(
+\begin{array}{cc}
+50 & -10 \\
+20 & 40 \\
+0 & -10 
+\end{array}
+\right)
+$$
+\end{frame}
+
+\begin{frame}
+\frametitle{Nash equilibrium}
+
+\begin{itemize}
+\item Generalization of minimax for non-zero sum games (John Nash).\vspace{0.3cm}
+
+\item Most popular solution concept in game theory. \vspace{0.3cm}
+
+\item Equivalent to minimax for zero-sum games.\vspace{0.3cm}
+
+\item Finds optimal mixed strategies for players in arbitrary games.\vspace{0.3cm}
+
+\item e.g. use GAMBIT software to search numerically 
+\begin{itemize}
+\item \alert{(Is GAMBIT broken in 2005/6?)}
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Cooperative games}
+
+\begin{itemize}
+\item Zero sum games are anti-cooperative.
+
+\item If players (agents) can win by working together in the long-term, we call games
+cooperative, e.g. sharing wireless bandwidth in a friendly way or competing
+aggressively.
+
+$$
+\Pi = \left( 
+\begin{tabular}{c|c|c}
+   & Compete & Share\\
+\hline
+Compete & ? & ?\\
+Share & ? & ?
+\end{tabular}
+\right)
+$$
+
+\item Does it pay agents to share or to compete? e.g.
+
+
+\item We need to model payoffs to make these into games.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Dilemma games}
+
+What do we do if we have this? Let `C' mean cooperate and `D'
+mean ``defect'' from cooperation, i.e. stab in the back!
+
+\psfig{file=dilemma.eps,width=3cm}
+
+\begin{itemize}
+\item $R$ is the reward for cooperation.
+\item $T$ is the temptation to ``defect''.
+\item $S$ is the sucker's payoff.
+\item $P$ is the punishment for both losing the trust gamble.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Dilemma games II}
+
+\begin{itemize}
+\item Criterion $T>R>P>S$. 
+
+\item Here we see both players gamble on each others' kindness.
+
+\begin{itemize}
+\item If both cooperate, both get maximum reward.
+\item If one cooperates and the other defects, the defector wins by exploiting the other.
+\item If both try to exploit each other, they both lose with a minimum payoff.
+\end{itemize}
+
+Applications:
+\begin{itemize}
+\item \alert{Imagine customers sharing an Ethernet (see book).}
+\item \alert{Imagine users sharing a fixed size disk.}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Iterated dilemmas - trade}
+
+Basis for commerce:
+\begin{itemize}
+\item Treat each game as a single interaction and play the game many times,
+
+\item Each player can only see {\em previous} rounds.
+
+\item The strategy of
+`tit for tat' is  found to be VERY effective at stabilizing a players' returns.
+
+\item This is used to argue for the significance of strategy in conflict/cooperation
+scenarios.
+
+\item \alert{Shows that there is no incentive to cooperate if agents meet only once} (think
+ubiquitous computing).
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Contract Agreement - Principle Agent Model}
+
+
+Finding equilibrium contract:\vspace{0.3cm}
+\begin{itemize}
+\item Emphasizes the order of players and information available.\vspace{0.3cm}
+
+\item Playing for profit - maximize ``profit - cost''.\vspace{0.3cm}
+
+\item Player 1: strategies  -- choose prices.\vspace{0.3cm}
+
+\item Player 2: strategies -- choose expenses.\vspace{0.3cm}
+\end{itemize}
+
+\alert{See notes on micro-economic modelling}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Other games...}
+
+Management scenarios that are games?\vspace{0.3cm}
+\begin{itemize}
+\item Any resource sharing problem\vspace{0.3cm}
+
+\begin{itemize}
+\item Load sharing (clusters/server farms)
+\item Service Level contracts
+\end{itemize}
+
+\item Pricing of services - contracts/outsourcing.\vspace{0.3cm}
+
+\item Finding mixture of services to balance a competitor.\vspace{0.3cm}
+
+\item Find best way to cooperate in a coalition with other service-providers.
+
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Some tools}
+
+\psfig{file=gambit.eps,width=10cm}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Summary}
+
+
+\begin{itemize}
+\item The aim is to make rational decisions, not guesses\vspace{0.3cm}
+
+\item Game theory has methods to balance competing interests
+
+\begin{itemize}
+\item Aggressively (zero-sum)
+\item Cooperatively (non-zero sum)\vspace{0.3cm}
+\end{itemize}
+
+\item Value is related to risk. 
+\begin{itemize}
+\item If we acts badly towards others, hope not to meet them again! (TIT-FOR-TAT)
+\item Generous strategies tend to win in cooperative games.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\end{document}

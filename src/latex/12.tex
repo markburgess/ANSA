@@ -1,0 +1,206 @@
+\documentclass[12pt]{beamer}
+
+\title{Week 5: Simple systems}
+\usepackage{epsfig}
+\usepackage{beamerthemesplit}
+
+
+\begin{document}
+%\maketitle
+\frame{\titlepage}
+
+
+
+\section{What is a system?}
+
+%\frame
+%{
+%  \frametitle{Features of the Beamer Class}
+%
+%  \begin{itemize}
+%  \item<1->Normal LaTeX class.
+%  \item<2-> Easy overlays.
+%  \item<3-> No external programs needed.      
+%  \end{itemize}
+%}
+
+\frame
+{
+\frametitle{What is a system?}
+
+\begin{itemize}
+\item An organized structure or process that has predictable behaviour -- and
+has a function. (This is a human judgement)
+
+\item Static system (data structure) e.g. library, building.
+
+\item Dynamic system (process + structure), e.g. computer, pendulum, human...
+
+\item Whether static or dynamics depends on the time-scale we are interested in
+describing. e.g. a library has a static organization over long times, but books
+come and go in the short term.
+\end{itemize}
+}
+
+\frame
+{
+As always we can describe as discrete or continuous.
+\begin{itemize}
+\item Discrete $q_1,q_2,..$ = architecture, relationships, diagrams, graphs, patterns etc.
+\item Continuous $q(t)$ = variables, relationships, differential equations etc.
+\end{itemize}
+We have to use our imagination to come up with a description that works for us.
+}
+
+
+\frame
+{
+In the continuous picture we examine changing resources $q(t)$, it is often described
+by differential equations.
+
+In the discrete picture the sequence $q_1,q_2,...$ is described by
+algorithms for transition rules, state machines, etc. This is complex except for
+simple cases.
+
+A general system consists of:
+\begin{itemize}
+\item Freedoms (degrees of freedom), e.g. $q,t,x,y,z,..$ the possibility for change.
+\item Constraints, or rules that describe how we get from one value $q$ at one address $t,x,...$ to another $q'$.
+\end{itemize}
+In continuous systems it is sufficient to describe $q(t)$ and $dq/dt$. 
+}
+
+\section{Example}
+
+\frame
+{
+\frametitle{Example}
+Continuous, harmonic motion:
+$$
+\frac{d^2}{dt^2} q(t)= -\omega^2 q(t)
+$$
+Constraint says that the greater the distance $q(t)$ from starting point, the more we are
+decelerated, until motion reverses. This is wave-like motion, pendulum, etc.
+}
+
+\frame
+{
+Discrete: (see last week)
+$$
+\hat O \vec q = \vec q'.
+$$
+Both these have the form 
+\vspace{1cm}
+
+``OPERATOR (SOMETHING) = SOMETHING ELSE''.
+}
+
+\section{Symmetry}
+
+\frame
+{
+\frametitle{Symmetry}
+\begin{itemize}
+\item Sometimes it is impossible to tell the difference between different configurations
+of a system, e.g. a wave has many maxima, all identical unless we have some
+frame of reference to an environment.
+
+\item Environment (boundary conditions) are thus also required to specify behaviour with all
+constraints accounted for.
+\end{itemize}
+}
+
+\section{Promises}
+
+\frame
+{
+\frametitle{Policy, Constraint and Promises}
+
+Policy is a collection of predecided answers to questions about
+system behaviour. Components make promises about their behaviour.
+
+Let $s$ be a promise ``sender'' and $r$ be a promise receiver. A promise
+is written
+$$
+s \stackrel{\tau,\chi}{\longrightarrow} r
+$$
+where $\tau$ is the type of promise and $\chi$ is a constraint.
+}
+
+\frame
+{
+\frametitle{Promise valuations}
+\begin{itemize}
+\item Policy includes human judgement.
+
+\item Human management can place a value on promises.
+
+\item The value of a promise to the receiver.
+$v_r \left( s \stackrel{\tau,\chi}{\longrightarrow} r\right)$
+
+\item The receiver's Expectation that a promise will be kept.
+$E_r \left( s \stackrel{\tau,\chi}{\longrightarrow} r\right)$
+\end{itemize}
+We can use promises to connect to economics too.
+}
+
+
+\section{Currencies and value systems}
+
+\frame
+{
+\frametitle{Currencies and value systems}
+\begin{itemize}
+\item Back to dimensional analysis again.
+
+\item Economics - we measure with money.
+
+\item Physics - measure with energy.
+
+\item These are all fictitious scales - what about things like ``user
+satisfaction'' and ``privilege'' or ``trust''.
+\end{itemize}
+}
+
+
+\frame
+{
+Other scales:
+\begin{itemize}
+\item Money, 
+\item Security, 
+\item Trust, 
+\item Happiness
+\end{itemize}
+}
+
+
+\frame
+{
+\begin{itemize}
+
+\item We need relationships between these that are concretely specified if we are
+to use them analytically. e.g. ``Time is money''
+$$
+t = m\alpha +\beta ?
+$$
+\item This relatioship is arbitrary -- how much is time worth? 
+
+\item The relationship is itself POLICY.
+This is also part of a system definition.
+\end{itemize}
+}
+
+\frame
+{
+\frametitle{Summary}
+\begin{itemize}
+\item Freedoms vs constraints defines behaviour
+\item Promise more constraints to tune behaviour as we want
+\item Valuations of promises (subjective) determine whether humans
+will make and keep promises.
+\end{itemize}
+}
+
+
+\end{document}

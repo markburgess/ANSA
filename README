@@ -1,0 +1,33 @@
+
+The main files are the pdfs, accompanying the course book
+
+  Analytical Network and System Administration, by Mark Burgess
+ 
+LectureNotes.pdf           - what I wrote on the blackboard, week by week
+CourseExerciseWorkbook.pdf - a book from which weekly exercises were picked
+CourseSolutions.pdf        - the solution guide
+
+--------- FILES -----------------
+
+Due to a git accident, the files had to be recovered from git lost and
+found, where their names were erased.  In the future it might be
+useful to access these source files, but probably not that useful, so
+cross that bridge when we come to it.
+
+This exercise booklet is written in old postscript text due to the eps figures. It could probably be converted
+into PDFlatex now.
+
+*.fig - xfig figures (export to eps or pdf)
+*.eps - encapsulated postscript
+
+Building
+
+latex problems.tex
+okular problems.dvi
+
+or pdflatex problems.tex
+okular problems.pdf
+
+Use okular as the viewer for dvi, eps, pdf
+
+

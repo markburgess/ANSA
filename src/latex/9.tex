@@ -1,0 +1,200 @@
+\documentclass{slides}
+
+\title{Week 6: Graphs and diagrams}
+\usepackage{psfig}
+
+\begin{document}
+\maketitle
+
+\slide{Representing relationships}
+
+Graphs easily represent relationships between discrete
+objects.
+
+\begin{itemize}
+\item Entity relation diagrams.
+\item Hierarchies (trees).
+\item Networks.
+\end{itemize}
+
+Diagrams have nodes and links. The links can be
+directed or undirected.
+
+Diagrams are systems. Freedoms: postion, colour, shape, direction,..
+Constraints: size, location, discrete...
+
+\slide{Graph}
+
+A graph is, formally, a pair $(X,\Gamma)$ of nodes or locations $X$
+and links (or edges) $\Gamma$, which are mappings from one position to
+another: $\Gamma: X \rightarrow X$.
+
+\psfig{file=g1.eps,width=14cm}
+
+The arrows can represent relationships:
+
+\begin{itemize}
+\item $A \rightarrow B$: dominates, relies on, promises to, ...
+\item $A \leftrightarrow B$ or $A -- B$: is associated with, is correlated with, ...
+\end{itemize}
+
+\slide{Degree and adjacency}
+
+The degree $k_i$ of a node $i$ is the number of links is has. For directed
+graphs we distinguish in-degree and out-degree:
+
+\psfig{file=degree.eps,width=14cm}
+
+Graphs are easily represented as {\em adjacency matrices}: 1 = link, 0 = no link.
+e.g. (first figure)
+
+$$
+A = \left(\begin{array}{cccc}
+0 & 1 & 0 & 0\\
+0 & 0 & 1 & 1\\
+0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0\\
+\end{array}\right)
+$$
+
+A is symmetrical if the graph is undirected
+
+\slide{Connectivity}
+
+The proportion of full-connectivity in a graph is $\chi$.
+Let $\vec h = \{h_i\}$ be 1 if a node/host is available, else 0.
+
+$$
+\chi = \frac{1}{N(N-1)} \vec h^{\rm T} A \vec h
+$$
+
+This equals 1 if the graph is {\em complete}, i.e. a link between
+every pair of nodes. It is zero if there are no links.
+
+\slide{Graphs as landscapes}
+
+Imagine a 3d view of the graph, with some height function:
+
+\psfig{file=landscape.eps,width=14cm}
+
+Let height represent `importance'. We can measure importance in
+different ways. A very useful way is to use {\em eigenvalue centrality}.
+
+\slide{Centrality}
+
+How important is a node?
+
+An important node is connected to many other {\em important} nodes (circular).
+
+$$
+I_i \propto \sum_{j \in {\rm neighbours}(i)} I_j
+$$
+The adjacency matrix is the matrix of neighbours:
+$$
+I_i \propto \left( \sum_j A_{ij}\right) I_j
+$$
+Let constant of proportionality be $k = 1/\lambda$ and we have that $\vec I$ is
+an eigenvector of $A$:
+$$
+A\vec I = \lambda \vec I.
+$$
+
+
+\slide{Centrality importance}
+
+The (eigenvector) centrality is used can be used to give a ranking
+of node importance in all situations where connectivity is important:
+
+\begin{itemize}
+\item Google uses this to rank web pages
+\item Vulnerability to virus spreading
+\item Resource bottlenecks
+\end{itemize}
+
+NB: we want the eigenvector of the largest eigenvalue, since this
+is formed from the purely positive sum of neighbours.
+
+\slide{Resource flows}
+
+Directed graphs represent flows, e.g. current packet flow.
+
+Undirected graphs represent equilibrium (balance), e.g. average traffic usage
+
+We can use centrality to find the importance structure (see 11.7.2).
+
+\slide{Percolation}
+
+What if the links are random (e.g. ad hoc nets), or we only know a probability distribution
+of the link degrees (e.g. Internet). 
+$$
+p(k) : \sum_k p(k) = 1
+$$
+
+What is the probability of there being at least one path that reaches
+every node. 
+
+The percolation transition occurs when:
+$$
+\langle k\rangle^2 + \sum_k k(k-2) p(k) > \log N
+$$
+for $N$ nodes. (See 11.6)
+
+\slide{Normalization}
+
+See chap 14. Recall database theory.
+
+If a directed relationship links multi-dimensional data at each node
+(i.e. a table of information), we can try to ensure that degrees of
+freedom (data objects) only occur a minimum number of times --- to
+avoid repetition and inconsistency, loops etc.
+
+\slide{Topology}
+
+Graphs are used to extract a particular discrete view of structural
+relationships. They generalize to smooth surfaces with a certain
+{\em topology}, in more general systems.
+
+\slide{Applications}
+
+Quality of service in networks - avoiding bottlenecks.
+
+Finding security weaknesses.
+
+Human time management and scheduling: start with
+a simple view:
+
+\psfig{file=org1.eps,width=14cm}
+
+\slide{Applications, continued...}
+
+Find out who is the most important, using
+a centrality view:
+
+\psfig{file=org2.eps,width=14cm}
+
+\slide{Eigenvvalues in octave/matlab}
+
+\begin{verbatim}
+octave:1> A = [ 0 1 0; 1 0 1; 1 1 0 ]
+A =
+
+  0  1  0
+  1  0  1
+  1  1  0
+
+octave:2> [vec,val] = eig(A)
+vec =
+
+   -7.5294e-01    4.0045e-01    7.0711e-01
+    4.6534e-01    6.4794e-01   -7.0711e-01
+    4.6534e-01    6.4794e-01   -4.4981e-17
+
+val =
+
+  -0.61803   0.00000   0.00000
+   0.00000   1.61803   0.00000
+   0.00000   0.00000  -1.00000
+
+octave:3>
+\end{verbatim}
+\end{document}

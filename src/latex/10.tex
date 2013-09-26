@@ -1,0 +1,153 @@
+\documentclass{slides}
+
+\title{Week 9: Queues and arrivals}
+\usepackage{psfig}
+
+\begin{document}
+\maketitle
+
+
+\slide{Queues}
+
+
+Chapter 12.
+
+Queues occur in all services and workflow situations.
+
+Random arrivals.
+
+Fixed distribution of processing, due to distribution of jobs.
+
+Queues are classified in Kendall notation: A/S/c
+\begin{itemize}
+\item A - Arrival distribution
+\item S - Service processing distributions
+\item c - number of servers
+\end{itemize}
+
+Look for average queue lengths.
+
+\slide{The Poisson assumption}
+
+Distribution of inter-arrival times.
+
+Exponential form -- Poisson -- is used for two reasons:
+
+\begin{itemize}
+\item It is easiest to analyze.
+\item It is a limiting case for large statistics and independent sources (analogous
+to Gaussian central limit theorem).
+\end{itemize}
+
+\slide{Simple queue M/M/1}
+
+M means `memoryless' or Poisson.
+
+Simple rate balancing: $\lambda$ arrival rate serviced by $\mu$ processing rate.
+
+Aerage of $n-1$ packets already in a buffer, packets
+arrive at a rate of $\lambda$ per second. When
+$n$ packets in the buffer, some packets must be forwarded at rate $\mu$,
+otherwise the average number of packets in the queue will not stay constant.
+\begin{eqnarray}
+\lambda\; p_{n-1} = \mu\; p_{n},\nonumber\\
+p_{n} = \rho p_{n-1},\nonumber
+\end{eqnarray}
+for any $n$, where $\rho=\lambda/\mu$. $\rho$ is called the
+traffic intensity. 
+
+\slide{Solve rate equation}
+\begin{eqnarray}
+p_1 = \rho p_0\nonumber\\
+p_2 = \rho^2 p_0\nonumber\\
+p_n = \rho^n p_0.\nonumber
+\end{eqnarray}
+The sum of probabilities is always 1, so
+\begin{eqnarray}
+\sum_{n=0}^\infty p_n = 1.\nonumber
+\end{eqnarray}
+This is a geometric series, so we can find $p_0$:
+\begin{eqnarray}
+\sum_{n=0}^\infty p_n = \frac{p_0}{1-\rho}= 1.\nonumber
+\end{eqnarray}
+Thus we have, for any $n$,
+\begin{eqnarray}
+p_n = (1-\rho)\rho^n.\nonumber
+\end{eqnarray}
+
+\slide{Comments}
+
+We allow the queue to grow to infinite length -- not realistic.
+
+This is the only model that is simple enough to get an analytic answer.
+
+
+\slide{Expected queue length}
+
+\begin{eqnarray} 
+\langle n \rangle = \langle n\rangle = \sum_{n=0}^\infty\;
+np_n.\nonumber
+\end{eqnarray}
+Substituting for $p_n$,
+\begin{eqnarray}
+\langle n\rangle = \sum_{n=0}^\infty\; n (1-\rho)\rho^n\nonumber\\
+= \sum_{n=0}^\infty\; n \rho^n - \sum_{n=0}^\infty\; n
+\rho^{n+1}\nonumber
+\end{eqnarray}
+Relabelling $n\rightarrow n+1$ in the second term gives us another
+geometric series:
+\begin{eqnarray}
+\langle n\rangle = \sum_{n=0}^\infty\; n \rho^n - \sum_{n=1}^\infty\; (n-1) \rho^{n}\nonumber\\
+= \sum_{n=1}^\infty \; \rho^n\nonumber\\ =
+\frac{\rho}{1-\rho}\nonumber
+\end{eqnarray}
+Thus the mean number of packets is
+\begin{eqnarray}
+\langle n\rangle = \frac{\rho}{1-\rho}\nonumber\\
+\rightarrow \infty \qquad (p \rightarrow  1)\nonumber
+\end{eqnarray}
+The variance can also be worked out
+\begin{eqnarray}
+\langle (n-\langle n\rangle)^2\rangle = \frac{\rho}{(1-\rho)^2}\nonumber
+\end{eqnarray}
+This gives us an estimate of the size of buffer that we need in order
+to cope with a normal traffic rate.
+
+\slide{Some simple average laws}
+
+Utilization law.
+
+Analagous to Ohm's law, for electrons. We make a rough ``flow'' approximation.
+
+This gives us some other analogies for series and parallel queues,
+as if they were resistors in an electric circuit.
+
+\slide{Folk theorems}
+
+Section 18.2.
+
+A parallel coupling of queues is never worse than a single queue with greater
+capacity. 
+
+A serial coupling of queues is never better than a single queue with greater
+capacity. (Weakest link)
+
+Can be translated for comparing $M/M/k$ queue with $k$-$M/M/1$ queues:
+One queue with $k$ servers is never worse than $k$ queues with 1 server.
+
+\slide{Hurst exponent}
+
+Coarse-graining usually results in smoothing, if
+ fluctuations have a particular scale.
+
+If fluctuations are scale-free (fractal), then call them self-similar.
+
+Scaling relation:
+$$
+s^{-H}\; q(st) = q(t)
+$$
+
+$H$ is the Hurst exponent.
+
+
+\end{document}

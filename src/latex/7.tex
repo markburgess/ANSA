@@ -1,0 +1,2106 @@
+
+\documentclass{book}
+
+\usepackage{a4}
+\usepackage{epsfig}
+\title{\bf\sc \Huge Analytical Network and System Administration Workbook}
+\author{\sc Mark Burgess}
+
+\usepackage{alltt}
+\usepackage{times}
+\usepackage{boxthm}
+\newtheorem{exercise}{Exercise}
+\newboxtheorem{solution}{Solution}
+\usepackage{fancyheadings}
+\usepackage{tocloft}
+\pagestyle{fancyplain}
+\lhead[\fancyplain{}{}]{\fancyplain{}{\rightmark}}
+\rhead[\fancyplain{}{\leftmark}]{\fancyplain{}{}}
+
+\def\boxx{\vcenter{\vbox{\hrule height.3pt
+          \hbox{\vrule width.3pt height6pt
+          \kern6pt\vrule width.3pt}\hrule height.3pt}}\;}
+
+\def\beq{\begin{eqnarray}}
+\def\eeq{\end{eqnarray}}
+\def\2{\frac{1}{2}}
+\def\det{{\rm det}}
+\def\Tr{{\rm Tr}}
+\def\rhat{{\hat{\bf r}}}
+\def\i{\hat{\rm i}}
+\def\ij{{\rm i}}
+\def\d{{\rm d}}
+\def\e{{\rm e}}
+\def\union{{\cup}}
+\def\intersect{{\cap}}
+
+\def\CNOT{~{\rm\bf NOT}\,}
+\def\cnot{{\neg}}
+\def\CAND{~{\rm \bf AND}~}
+\def\cand{\;{\cap}\;}
+\def\COR{~{\rm \bf OR}~}
+\def\cor{\;{\cup}\;}
+\def\CXOR{~{\rm \bf XOR}~}
+\def\cxor{\;{\oplus}\;}
+\def\CEQUALS{~{\rm \bf EQUALS}~}
+
+\begin{document}
+
+\maketitle
+
+~
+\eject
+
+\chapter*{What is the course about?}
+
+\noindent This course is about asking searching questions about systems and answering them
+as impartially as we can.
+We want to ask questions like the following:
+\begin{itemize}
+\item How to we describe systems conceptually, separating what is important from what is not important?
+\item How do we maximize performance of the system?
+\item How do we minimize risk of `loss'?
+\item How do we achieve stability and reliability?
+\item How do we repair damage?
+\item What subset of maintenance operations depends on the order in which we perform them?
+\end{itemize}
+To answer questions like these, we need to be more precise than we are
+used to being. We need to learn to think a new language: the language of
+precision thinking --- mathematics.
+
+Some of the problems are simply artificial, designed to discipline and
+train you into thinking analytically. Others are directly practical.
+{\em When you are answering these questions, think of how you would
+apply this knowledge, for instance in your final masters thesis.}
+
+\vspace{1cm}
+\noindent {\bf Write your solutions to these problems legibly by hand. Do not waste time typesetting the answers -- spend your time thinking about them!}
+
+\vspace{1cm}
+\noindent Some additional literature is recommended to you in answering these
+problems.
+\begin{itemize}
+\item {\em Performance by Design}, D.A. Menasce, V.A.F. Almeida and L.W. Dowdy, Prentice Hall, ISBN 0-13-090673-5. 
+
+\item {\em Measurement Uncertainty (Method and Applications)}, R.H. Dieck, 3rd edition, ISBN 1-55617-759-X, Intrumentation, Systems and Automation Society (ISA).
+\end{itemize}
+
+\chapter{ Philosophy of science}
+
+The aim of this week's exercises is to make you reflect on what the course
+will be about and what you hope to achieve from it.
+In addition, there are some exercises that review basic analytical skills.
+
+\begin{exercise} 
+Skim through the course book to get an idea of what this course is
+about. Read the introduction and the conclusions.
+Think of at least one question from networking or system
+administration that you would like to know the answer to, where you
+think it might be possible to calculate or learn the answer by
+analytical methods.
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+\begin{exercise} 
+Comment on the difference between the scientific method and the
+mathematical method (logic). Can we prove that something will never
+happen, or that something will always work:
+\begin{enumerate}
+\item Using the scientific method?
+\item Using mathematics?
+\end{enumerate}
+What are the limitations of these approaches?
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+\begin{exercise} 
+Comment on the ethics of using the scientific method in system
+administration. Is it ethical to investigate and analyse systems
+relentlessly to make decisions about system policy? Would it be
+just as good to `cheat' by taking short cuts and making assumptions
+that are not supported by evidence? Discuss this.
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+\begin{exercise}
+Consider the statement often made in connection with security: 
+``Happy users are well-behaved users''. What does this mean?
+How might you go about testing this hypothesis? How could you
+characterize happiness of users and well-behavedness. How might
+you design an experiment to test this?
+mean
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+\begin{exercise} 
+Write down and learn the upper and lower case Greek alphabets and the 
+common names of the glyphs.
+\end{exercise}
+\begin{solution}
+The Greek alphabet:
+
+\begin{tabular}{ccc}
+Alpha & A & $\alpha$\\
+Beta & B & $\beta$\\
+Gamma &$\Gamma$ & $\gamma$\\
+Delta &$\Delta$ & $\delta$\\
+Epsilon & E & $\epsilon$\\
+Zeta & Z & $\zeta$\\
+Eta & H & $\eta$\\
+Theta &$\Theta$ & $\theta$\\
+Iota & I & $\iota$\\
+Kappa & K & $\kappa$\\
+Lambda & $\Lambda$ & $\lambda$\\
+Mu & M & $\mu$\\
+Nu & N & $\nu$\\
+Xi &$\Xi$ & $\xi$\\
+Omicron & O & o\\
+Pi &$\Pi$ & $\pi$\\
+Rho & P &$\rho$\\
+Sigma &$\Sigma$ &$\sigma$\\
+Tau & T & $\tau$\\
+Upsilon &$\Upsilon$ & $\upsilon$\\
+Phi &$\Phi$ & $\phi$\\
+Chi & X & $\chi$\\
+Psi &$\Psi$ & $\psi$\\
+Omega &$\Omega$ & $\omega$\\
+\end{tabular}
+\end{solution}
+
+
+\begin{exercise}
+Let the set $x_i$ for $i=1,2,\ldots,10$ be given by
+\beq
+\{ x\} = \{1,4,3,2,6,5,8,9,7,10\}
+\eeq
+\begin{enumerate}
+\item What is $\sum_{i=1}^3 x_i$?
+\item What is $\sum_{i=1}^{10} x_i$?
+\item What is $\prod_{i=1}^4 x_i$?
+\item What is the mean value of $x_i$, $\overline x$? Explain the meaning of the mean value of a set of numbers.
+\item What is the expectation value of $x_i$, $\langle x\rangle$? Explain the meaning of the expectation value of a distribution of numbers.
+\item What is the difference between the expectation value and the mean 
+value of a set of values?
+Given an example of usage where expectation value and
+mean are the same and an example where they are different. (This question is about explaining
+how an idea is used in two different ways, and it is really a philosophical question.)
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise}
+Sketch a system consisting of a web server, a DNS server and appropriate hardware,
+connected to the Internet. Suppose you wanted to study and describe the following; what variables
+or attributes would you want to measure?
+\begin{enumerate}
+\item Performance.
+\item Architecture.
+\item Utilization.
+\end{enumerate}
+In each case describe the variables you could measure or model, what values they
+can assume, and explain how they 
+vary or change from place to place.
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+\begin{exercise} 
+This problem is about dimensional analysis, i.e. how we relate
+different scales of measurement. Dimensional analysis is a basic skill
+in science and engineering, where measurements are made and relationships are
+expressed.
+\begin{enumerate}
+\item When FastSearch left Boston, all its computers had to be transported
+across the country to Sacramento. (Transportation is paid by weight.)
+Suppose we  have $N$ computers and $W$ is the total weight to be
+transported.
+Clearly
+\beq
+W\propto N
+\eeq
+so we can write
+\beq
+W = kN +c,
+\eeq
+for some constants $k$ and $c$. If $W$ is measured in kilogrammes, what
+are the units of $k$ and $c$? Since Americans do not understand SI units,
+they have to convert $W$ into pounds, using a formula $P = \alpha W$.
+What are the dimensions (units) of $\alpha$?
+
+\item If $A$ is measured in nanometres and $B$ is measured in kilogrammes,
+what is the meaning of $A+B$? 
+
+\item Let $A$ be the number of arrivals (packets) per second in a computer
+network. Suppose that the conversion factor $\kappa$ is a constant
+measured in kilobytes per packet. Write down an expression for the
+number of kilobytes that arrive in time $T$ seconds.
+
+\item In wave theory one expresses waves in the form $A\sin(kx-\omega t)$.
+Let $\theta = kx -\omega t$, where $\theta$ is an angle measured in radians,
+$x$ is distance measured in metres and $t$ is time measured in seconds.
+What are the dimensions of $k$ and $\omega$? The wavelength $\lambda$
+is measured in metres per cycle and
+is related to $k$. On dimensional grounds, argue how $\lambda$ and
+$k$ must be related.
+
+\item The frequency $f$ is measured in Hertz (cycles per second). 
+How many radians are there
+per wave cycle? Find a relationship between $f$ and $\omega$.
+
+\item The speed of a wave $c$ is measured in metres per second.
+Find a relationship between $f$, $\lambda$ and $c$, using
+dimensional arguments.
+
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise}
+In a human-computer system human values are an important part of
+system design.
+Comment on whether you think human qualities can be quantified and
+dealt with using the scientific method.
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+
+\chapter{ Observations, data collection and uncertainty}
+
+The problems this week are aimed at developing the skill of being
+precise about what you say. Many misunderstandings and excuses for
+poor practice in system administration are the result of lack
+of adequate modelling. Mathematics helps us to formulate models in two ways:
+\begin{itemize}
+\item It is a precise language that is well known and standard.
+\item It expresses many concepts that are relevant to systems and contains tools that will help us to unravel things that are `implicit' in our assumptions.
+\end{itemize}
+
+
+
+\begin{exercise}
+This problem is about using graphs to explain relationships.
+In order to estimate the average usage of a computer system a system
+administrator measures the time interval between each new request for
+data from disk modification times $\Delta t$ and counts the frequency
+$N(\Delta t)$ with which a nearest whole number of seconds occurs.
+\begin{center}
+\begin{tabular}{r|r}
+$\Delta t$ & $N(\Delta t)$\\
+\hline
+1  & 57364\\
+2  & 12052\\
+3  & 7005\\
+5  & 4679\\
+10 & 3050\\
+30 & 795\\
+37 & 531\\
+38 & 509\\
+40 & 552\\
+\end{tabular}
+\end{center} 
+\begin{enumerate}
+\item What do you think these measurements tell us about the
+pattern of usage of the system?
+
+\item Plot the data in the table:
+\begin{enumerate}
+\item $N(\Delta t)$ against $\Delta t$.
+\item $\log N(\Delta t)$ against $\log \Delta t$.
+\end{enumerate}
+
+\item The system administrator has heard that activity that is
+generated by human patterns follows an empirical law of the
+form
+\beq
+N(\Delta t) \propto \Delta t^{-\alpha}
+\eeq
+for some positive constant $\alpha > 0$, and that data stored by
+automated computer processes follows the form
+\beq
+N(\Delta t) \propto \e^{-\beta t}.
+\eeq
+From your data plots suggest which of these two laws best fits
+the observed data and find the approximate value of $\alpha$ or $\beta$.
+\end{enumerate}
+Why do we care which of the above is true?
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise} 
+This exercise is to remind you about the basic `hands-on' skills of calculus.
+The great engineers of the Victorian age used these methods to build the
+industrial revolution. You can use them to revolutionize your understanding
+of systems.
+
+When answering these exercises, approach them as you would approach
+any problem in system administration: do not simply copy an answer
+from somewhere uncritically, but make sure you understand all the steps
+underpinning the result, i.e. create a HOW TO for solving these exercises!
+The expressions below are based on expressions you will meet in the course.
+
+\begin{enumerate}
+\item Differentiate the function $\alpha(t)= c_1 t + c_2 + c_3 t^3$, with respect to $t$, where $c_i, i = 1,2,3$ are constants.
+\item Differentiate the function $\beta(t)=\alpha(t)\e^{-\lambda t}$
+\item Differentiate $q(t) = q_0 \left(1+\sin(2\pi t/P)\right)$ wrt $t$. Sketch
+the function roughly by hand.
+\item Differentiate the function $Q(t) = q_0 \left(1+\sin(2\pi t/P)\right)\e^{-\lambda t}$ with respect to $t$. Sketch the function roughly by hand.
+\item Differentiate $\rho(t) = \int_0^b q(t)(t'-t)dt'$ wrt $t$.
+\item Differentiate $\rho(t) = \int_0^b q(t')(t'-t)dt'$ wrt $t$.
+\item Differentiate $\log(\alpha t)$ wrt $t$.
+\item Find the indefinite integral with respect to $t$ of $\sin(\omega t)$
+\item Find the indefinite integral with respect to $t$ of $\cos(2\pi f t)$
+\item Find the indefinite integral with respect to $t$ of $\e^{-\lambda t}$
+\item Find the indefinite integral with respect to $t$ of $\e^{-\lambda t}\sin(\omega t)$
+\item Find the indefinite integral with respect to $t$ of $c_1 t+c_2 t^2+c_3 t^3$, where $c_i, i=1,2,3$ are constants.
+\item Find the indefinite integral with respect to $t$ of $\sum_{n=1}^m c_n t^n$ where $m,c_n$ are constants.
+\item Find the indefinite integral with respect to $t$ of $\log(\alpha t)$
+\item Evaluate $\int_0^1\;\alpha t\,dt$.
+\item Evaluate $\int_{-1}^1\;\alpha t\,dt$.
+\item Evaluate $\int_0^\pi \sin(\omega t)dt$ as far as possible.
+\item Evaluate $\int_{-a}^{+a} t\cos(\omega t)dt$ exactly.
+\item (Hard) Evaluate $\int_{-\infty}^{+\infty} \e^{-a t^2} dt$.
+\item Describe in words the fundamental theorem of calculus (hint: what is the physical interpretation of the derivative and of the integral?).
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+\begin{exercise} 
+This exercise is about developing your use of mathematics as a natural
+language for expressing ideas about systems. You need to know how to
+``say'' (read/pronounce) these expressions in technical terms and in
+common terms, as they express behaviours in systems.
+\begin{enumerate}
+\item Express $v(t) = \sin (\omega t)$ in English words.
+\item Express $v'(t) = \frac{d}{dt}\sin(\omega t) = \omega \cos(\omega t)$ in Engish words.
+\item Express $v'_0 =  \frac{d}{dt}\sin(\omega t)\Bigg|_{t=0}$ in English words.
+\item What is the significance of an even function?
+\item What is the significance an odd function?
+\item What kind of function is the product of an even and an odd function?
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise} 
+This exercise is about matters related to {\em functions}. We take as
+an example the use of functions of time and space to describe waves,
+since the description of wavelike phenomena is one obvious
+application. Some more practice at differentiation is part of the
+exercise.
+\begin{enumerate}
+\item How many radians are there in a single cycle?
+\item Sketch by hand the function $\psi(t) = A \sin(2\pi t)$ for $t \in [0,1]$.
+\item Explain how this function can be considered to be a mapping.
+\item What is the domain and range (co-domain) of this function mapping?
+\item Suppose we drop the condition $t \in [0,1]$, what are the domain and range
+of the function now?
+\item Sketch (any way you like) the function $\psi(x,t) = A\sin(kx-\omega t)$.
+
+\item The equation for a  one dimensional wave $\psi(x,t)$ is written
+\beq
+\frac{\partial^2\psi(x,t)}{\partial x^2} = \frac{1}{c^2} \frac{\partial^2\psi(x,t)}{\partial t^2},
+\eeq
+where $c$ is the speed of the travelling wave.  Show that the sine
+wave
+\beq
+\psi(x,t) = A\sin(kx - \omega t)
+\eeq
+is a solution of the wave equation, provided that
+\beq
+k = \pm \omega/c.
+\eeq
+Sketch this function for some value of $k$ and $\omega$.  $k$ is
+called the {\em wavenumber} and $\omega$ is called the {\em angular
+frequency}.  What do these quantities represent? Use your sketch to
+help you explain.
+
+The {\em frequency} of a wave is defined by
+\beq
+\omega = 2\pi f
+\eeq
+and $f$ is measured in Hertz (Hz) or `cycles per second'. Draw one
+cycle of the wave on your sketch. The wavelength of the wave is
+defined by
+\beq
+\lambda = \frac{2\pi}{k},
+\eeq
+and is measured in metres (m). Draw one wavelength on your
+sketch. Using the condition for the wave solution above, show that
+\beq
+\lambda f = c.
+\eeq
+ 
+\item Suppose we take a general linear combination of waves, with
+different wave-numbers $k$ and frequencies $\omega$,
+\beq
+\Psi(x,t) = \int dkd\omega \; c(k,\omega)\; \sin(kx-\omega t),
+\eeq
+show that this combination of signals also is a solution of the wave
+equation, given the same relationship between frequency and wavenumber
+as before.  Hence conclude that any signal shape that can be constructed
+by adding different frequencies together can only be transmitted at the speed of
+waves in the carrier medium.
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+
+\begin{exercise}
+Express in your own words the kinds of problems that calculus
+(differentiation and integration) is useful for. Comment on the relationship
+between calculus and the continuum approximation. How do these two go together?
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise}
+This exercise is to remind you about the meaning of maxima and minima
+of functions. Determine any maxima or minima in the following functions.
+\begin{enumerate}
+\item $f(x) = x-3$
+\item $f(x) = (x-3)^2$
+\item $f(x,y) = \sqrt{x^2+y^2}$
+\item $f(x,t) = A\sin(kx-\omega t)$
+\item $f(x) = k^2-x^2$.
+\end{enumerate} 
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+
+\chapter{From the discrete to the continuous}
+
+
+
+\begin{exercise} 
+(NEW) A system administrator's help-desk has a ticket handling system
+for user queries that classifies tasks in the following states of
+completion:
+\begin{enumerate}
+\item New problem ticket
+\item Waiting to be assigned to a handler
+\item Assigned to handler, waiting for response from handler
+\item Reply sent to user, waiting for response from user
+\item Ticket closed
+\end{enumerate}
+Show that this can be modelled as a finite state machine, by drawing a
+diagram with appropriate transitions. Explain your diagram.
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise} 
+What is meant by a finite state machine? Keyboards are configured to a
+wide range of specifications around the world; all others have
+additional symbols that have to be squeezed onboard.  The simplest
+keyboard is the American one.  
+
+On a Norwegian keyboard, when you press the
+\verb+^+ key or
+ALT GR key followed by the \verb+~+ sign, the tilde does not appear
+straight until you press another key. Suggest a way of modelling this
+keyboard map behaviour.
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise} 
+Draw a very simple non-deterministic finite state automaton that
+recognizes the TCP protocol, using the SYN, ACK, FIN flags as
+transition instructions between internal states. (It does not have to
+be elaborate, as long as it illusrates the main features.)
+
+The automaton should end up in an `accept' state for valid protocol
+streams. Can you make this automaton detect incorrect streams? Could
+you think of a way in which this idea could be used for network
+intrusion detection?
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+\begin{exercise} 
+This problem is about sets states and logic. You have to think about
+how different sets of values should be grouped together, named and
+identified. Consider the Venn diagram below:
+\begin{figure}[ht]
+\psfig{file=intersect.eps,width=4cm}
+\end{figure}
+Let $A$ and $B$ be abstract sets to be defined below. Decide whether
+the following definitions for $A,B$ lead to a picture that agrees with the
+figure.
+\begin{enumerate}
+\item 
+\beq
+A &=&  \{1,2,3,4,5,6,7\}\nonumber\\
+B &=&  \{3,7,19,24\}
+\eeq
+\item 
+\beq
+A &=&  \{644,600,400,555\}\nonumber\\
+B &=&  \{755,775,555,511\}
+\eeq
+\item 
+\beq
+A &=&  \{Windows,Unix,Macintosh\}\nonumber\\
+B &=&  \{Debian,RedHat,SuSE\}
+\eeq
+\item 
+\beq
+A &=&  \{ 0 \le t \le 1, 2 \le t \le 3\}\nonumber\\
+B &=&  \{ t=0.5, t=0.7\}
+\eeq
+\item 
+\beq
+A &=&  \{ /*/passwd, /etc/* \}\nonumber\\
+B &=&  \{ /etc/passwd, /etc/shadow, /tmp/passwd \}
+\eeq
+\item 
+\beq
+A &=&  \{Windows,Linux,Solaris,MacIntosh\}\nonumber\\
+B &=&  \{Sparc,Intel,AMD,68000,zSeries\}
+\eeq
+\end{enumerate}
+\end{exercise} 
+
+
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise}
+This exercise is about using sets to describe networks.
+\begin{enumerate}
+\item What is the set theoretical meaning of the Boolean expressions $\CAND$ and
+$\COR$? Draw these as Venn diagrams. Do Venn diagrams give a good
+representation of what the sets really look like, e.g. in part 4 of
+the previous exercise?
+
+
+\item In configuration management we think of systems as belonging to a set
+of all possible system types. For instance, in cfengine systems are classified
+by the sets to which they belong. e.g.
+\begin{itemize}
+\item {\tt Hr01} is the set consisting of all times between 01:00:00 and 01:59:59.
+\item {\tt linux} means the set of all systems that run any kind of linux operating system.
+\end{itemize}
+Operators \verb+. & | !+ are provided to combine these using Boolean logic. The
+symbols \verb+.+ and \verb+&+ have the same meaning.
+\item Explain with the help of a Venn diagram showing the machines in a network
+what is meant by the cfengine class expressions:
+\begin{verbatim}
+  i)  linux|solaris::
+ ii)  Hr01.crayos::
+iii)  (Hr01|Hr03).(linux|solaris)::
+\end{verbatim}
+
+
+\item Compare the meaning of 
+{\tt linux.Hr01} and $\{ linux \} \cap \{ Hr01 \}$.
+\end{enumerate}
+
+\item Some configuration management systems use hierarchical decompositions of
+the hosts in a network. Could we write the expressions above as tree-like
+hierarchies? e.g. as in the figure
+\begin{figure}[ht]
+\psfig{file=hier.eps,width=6cm}
+\end{figure}
+Compare these two methods critically.
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+
+\begin{exercise} 
+This problem is about the use of probabilities. Probability can be used
+either descriptively or predictively. When making predictions based on
+past experience we must use careful judgement.
+\begin{enumerate}
+\item Suppose we make a survey of computers at a computing company and we count the
+number (frequency) of occurrences of three categories of machine:
+$S = \{ windows, linux, solaris\}$. The following results are obtained:
+\begin{verbatim}
+ n(windows) = 25
+ n(linux)   = 16
+ n(solaris) = 3
+\end{verbatim}
+We call this kind of data {\em statistics}. From these values, compute the
+probability that a computer is windows, linux or solaris at the company.
+\item Probabilities derived from data are often used to predict the likelihood
+of finding a similar situation elsewhere, e.g. in intrusion detection.
+Comment on whether we can use the probabilities above to estimate the
+fractions of computers with these operating systems
+\begin{enumerate}
+\item At the same company in the future.
+\item In Norway today.
+\item Anywhere in the world today.
+\end{enumerate}
+
+\item Suppose that the computers counted are all desktop machines.
+Given only the probabilities above, if someone tells you the size of the
+company will grow to three times the total number of employees in the next year,
+can you say how many windows, linux and solaris machines will be needed at the
+company next year?
+
+\item The network engineers at the company are analyzing the traffic that
+passes in and out of the company to the Internet. From the packet headers they
+can see the origin and destination of each packet and can therefore determine
+which type of machine at the company generates which traffic. 
+Using the frequency data above, what can you
+say about the average level of traffic from solaris, windows and linux if
+\begin{enumerate}
+\item All employees work on similar tasks.
+\item If employees have differentiated tasks.
+\end{enumerate}
+
+\end{enumerate}
+
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+
+\begin{exercise}
+(NEW) This problem is about using an approximation to a discrete
+process to answer a practical question. We use expectation values and
+integration to help us. This question addresses disk backups and many
+other issues in an abstract way
+
+The Snow Clearing Model (or Windshield Wiper Model) is a way of
+thinking about maintenance in systems. Imagine that snow is falling on
+the ground (many discrete snowflake events are arriving) or that rain
+is falling on your car windshield. A plough or wiper-blade clears the
+falling `events' and then waits. When and how should you drive your
+snowplough to clear the snow? We shall show that there is a `best' answer
+to this problem.
+
+You can imagine that the snowflakes are like changes happening to the
+data on a disk, or they are like problems that are occuring in a
+system. We want to clear up these events by performing maintenance
+(clearing the snow), but the snow never stops falling. The snow falls
+mainly during the day, less at night (like users working) so we would
+like to decide when the best time to start clearing is (or when should a
+system administrator make a disk backup)?
+
+To answer this, we formulate a `risk function' $\rho$ based in the idea of
+Mean Time To Repair. The risk here is the risk of loss due to a
+catatrophe. For instance, as long as the snow is not cleared, a driver
+could crash; if there are non-backed-up changes to a disk, then the
+risk of losing data is high.  Since a catatrophe can occur at any
+time, the risk is proportional to the time between `now' and the next
+maintenance cycle:
+\beq
+\rho(t_0,t_b) = \rho_0 \langle T \rangle
+\eeq
+
+\begin{enumerate}
+\item Assume that maintainence (ploughing, backup) is performed once per day at time
+$t_0$ and takes time $t_b$ to complete; also the intensity of events
+(snowflakes, file changes) is represented by a function $q(t)$ which
+is periodic (see fig. \ref{wind}). Let the length of a dayly period be $P$;
+now show that we can use the function
+\beq
+q(t) = q_0 \left( 1 +\sin\left(\frac{2\pi t}{P}\right)\right)
+\eeq
+to model a Probability for Required Maintenance $p(t)$ during the
+time, by normalizing. Is this always positive? Does it lie in the
+range $[0,1]$?
+
+
+
+\begin{figure}[ht]
+\begin{center}
+\psfig{file=wind.eps,width=8cm}
+\caption{The snow clearing/windshield wiper model of maintenance. Three regions
+are identified: before, during and after maintenance.\label{wind}}
+\end{center}
+\end{figure}
+
+\item Suppose we can define a Time To Repair function $T(t)$ for events that occur
+at time $t$, express the expectation value $\langle T\rangle$ as an integral expression
+over the time period $[0,P]$
+
+\item Suppose an event occurs in region I or in region III, what is the average time before it will be ploughed/backed up for each of these two regions?
+
+\item If maintenance is quick, and $t_b$ is fairly short, then we can assume that
+half the changes that occur in region II occur only after the plough
+has made its sweep (we miss them). These changes will have to wait a
+full period $P$ to be swept again. Thus the Time To Repair in this
+region is the average of that in region I and $P$. What is it?
+
+\item Show that the risk function $\rho(t)$ can be written
+\beq
+\rho(t_0,t_b) &=& \rho_0 \int_0^{t_0-\2t_b} q(t)(t_0-t)dt\nonumber\\
+&+& \rho_0 \int_{t_0-\2t_b}^{t_0+\2t_b} q(t)(\2 P+t_0-t)dt\nonumber\\
+&+& \rho_0 \int_{t_0+\2t_b}^{P} q(t)(P+t_0-t)dt.
+\eeq
+
+\item This function can be minimized with respect to $t_0$ to find the optimal time
+to start ploughing. The answer is $t_0 = P/2$. Comment on this answer. Is this the time
+you would intuitively pick for taking a disk backup? Explain your thoughts.
+
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+
+\begin{exercise}
+(REVIEW) This problem is to remind you about matrix operations. Let
+\beq
+A &=& \left(
+\begin{array}{ccc}
+1 & 2 & 3\\
+4 & 5 & 6\\
+7 & 8 & 9\\
+\end{array}
+\right)\\
+B &=& \left(
+\begin{array}{ccc}
+2 & 1 & 1\\
+2 & 1 & 2\\
+1 & 1 & 1\\
+\end{array}
+\right)
+\eeq
+Find:
+\begin{enumerate}
+\item $A+B$
+\item $AB$ 
+\item $BA$
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+\begin{exercise}
+(REVIEW) This problem is to remind you about solutions to matrix equations.
+\begin{enumerate}
+\item Consider the matrix equation:
+\beq
+\left(
+\begin{array}{cc}
+1 & 2 \\
+3 & 4\\
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+x\\
+y\\
+\end{array}
+\right) = 0.
+\eeq
+\begin{enumerate}
+\item This is really two coupled scalar equations. Write these two
+equations separately. 
+\item Show that $x=y=0$ is a solution of the matrix equation.
+\item How can you determine quickly whether any other solutions exist? 
+\end{enumerate}
+\item Consider the matrix equation:
+\beq
+\left(
+\begin{array}{cc}
+4 & 2 \\
+2 & 1\\
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+x\\
+y\\
+\end{array}
+\right) = 0.
+\eeq
+\begin{enumerate}
+\item Show that $x=y=0$ is a solution of the matrix equation.
+\item How can you determine quickly whether any other solutions exist? 
+\end{enumerate}
+
+\item Consider the matrix equation:
+\beq
+\left(
+\begin{array}{cc}
+0 & 1 \\
+1 & 0\\
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+x\\
+y\\
+\end{array}
+\right) =
+\left(
+\begin{array}{c}
+x\\
+y\\
+\end{array}
+\right).
+\eeq
+\begin{enumerate}
+\item Show that $x=y=0$ is a solution of the matrix equation.
+\item Find any other solutions. (Hint: recall the previous problem above.)
+\end{enumerate}
+
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+
+
+
+\chapter{Configuration management}
+
+This exercise is about configuration management of computers and
+network devices. i.e. how we construct the details of a system
+and maintain them over time. It develops the abstract formulation of
+the preceding exercise so as to strip away the issues surrounding
+configuration management down to the essentials. By doing this, we can 
+identify the fundamental issues.
+
+
+
+\begin{exercise} 
+
+This problem is about {\em operations} of the kind used in configuration management.
+
+Consider the problem of file permission attributes. To keep the problem simple,
+we shall consider only the attributes for the owner of a file $f$. Let the
+vector
+\beq
+\vec P = \left(
+\begin{array}{c}
+1\\
+r(f)\\
+w(f)\\
+x(f)\\
+\end{array}
+\right)
+\eeq
+be formed from a constant value 1 followed by three Boolean functions
+that return 1 or 0 for the permissions for read, writing and execution of the
+file.
+
+\begin{enumerate}
+\item Which of the operations below is represented by the following matrix operation?
+\beq
+\vec P = \left(
+\begin{array}{cccc}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+1 & 0 & 0 & 0\\
+0 & 0 & 0 & 1\\
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+1\\
+r\\
+w\\
+x\\
+\end{array}
+\right)
+\eeq
+
+ \begin{enumerate}
+ \item chmod u+r f
+ \item chmod u+w f
+ \item chmod u+x f
+ \end{enumerate}
+
+\end{enumerate}
+
+
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+
+\begin{exercise}
+
+In configuration management we have a map or specification of how a
+system is supposed to be configured. This map is called the {\em
+policy} of the system. The process of maintenance is about checking
+whether a system is still compliant with policy, and repairing it if
+it isn't. Random errors and changes creep into systems for a number of
+reasons. The {\em snow-clearing model} of system maintenance imagines
+that random changes to the system are like falling snow and they have
+to be swept away at regular intervals. The {\em immunity model} tries
+to construct dumb `antibodies' (at set of operators $\hat A$) that,
+when applied persistently and without intelligence, lead to the
+snow-clearing model.
+\begin{enumerate}
+\item Let $\vec \psi$ be a vector of configuration parameters and let
+$\vec \psi_0$ be the state of the vector when it complies with
+policy.
+
+The immunity model says that regardless of the current state of the system
+$\psi$, some number of iterations of an operator $\hat A$ will return
+the system to its policy state. Once the system has reached that
+state, $\hat A$ has no further effect.
+\beq
+\hat A^n \psi &=& \psi_0\label{f1}\\
+\hat A \psi_0 &=& \psi_0
+\eeq
+This property is called {\em convergence}.
+Show that an operator that satisfies
+\beq
+\hat O^2 = \hat O
+\eeq
+satisfies the immunity property (i.e. it is convergent) for a state,
+provided it satisfies eqn. (\ref{f1}),
+and hence show that convergence is a stronger constraint than idempotence.
+This property is called {\em idempotence}.
+
+\item
+Show that the matrix chmod operator is both idempotent and that it
+satisfies the immunity property. 
+Explain why this operator is both convergent and idempotent.
+Describe or characterize the state
+$\psi_0$ for the chmod operator.
+
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise}
+Let us extend the configuration model by allowing for the creation
+and deletion of configurable objects (e.g. files). We define the
+extended state vector for a file object by
+\beq
+\vec\psi_f = \left(
+\begin{array}{c}
+1\\
+\sigma\\
+r\\
+w\\
+x\\
+\end{array}
+\right)
+\eeq
+where $\sigma$ is a string that is the contents of the file and $r,w,x$
+are the permission attributes as before. If $\sigma=\epsilon$ the file
+is empty. If $\sigma=0$, the file does not exist.
+\begin{enumerate}
+\item Show that the file creation operator (like Unix {\tt creat}
+or \verb+cat < /dev/null > file+
+with start permissions $R,W,X$ is $\hat C(\epsilon,R,W,X)$, where:
+\beq
+\hat C_f(\sigma,r,w,x) = \left(
+\begin{array}{ccccc}
+1 & 0 & 0 & 0 & 0\\
+\sigma & 0 & 0 & 0 & 0\\
+r & 0 & 0 & 0 & 0\\
+w & 0 & 0 & 0 & 0\\
+x & 0 & 0 & 0 & 0\\
+\end{array}
+\right)
+\eeq
+\item Show that $\hat C_f$ is idempotent, i.e. $\hat C^2 = \hat C$.
+
+\item Show that the permission setting operator (chmod) $\hat P$
+is also idempotent:
+\beq
+\hat P_f(r',w',x') = \left(
+\begin{array}{ccccc}
+1 & 0 & 0 & 0 & 0\\
+0 & 1 & 0 & 0 & 0\\
+r' & 0 & 0 & 0 & 0\\
+w' & 0 & 0 & 0 & 0\\
+x' & 0 & 0 & 0 & 0\\
+\end{array}
+\right)
+\eeq
+
+\item Show that $\hat C_f\hat P_f = \hat C_f$ and that $\hat P_f\hat C_f \not = \hat C_f\hat P_f$, i.e. that the operators do not commute.
+
+\item What consequences could this have for the configuration of the
+system if we base configuration management on operations that do not commute?
+
+\item What modification could we make to $\hat C$ in order to allow
+$\hat C$ and $\hat P$ to commute?
+
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise} Let us now extend the model above to include the editing of
+file contents. This is not a trivial operation like setting a file
+permission and it introduces new complexity mainly because of the
+way we think about editing files -- not because there is a difference
+in principle.
+\begin{enumerate}
+
+\item Consider the file modification operator $\hat M_f(\delta\sigma)$
+which appends a string $\delta\sigma$ to the end of the file $f$, i.e.
+such that 
+\beq
+\sigma\rightarrow\sigma+\delta \sigma,
+\eeq
+where ``$+$'' means ``join'' or append.
+Show that $\hat M_f(\delta\sigma)$ can be written
+\beq
+\hat M_f(\delta\sigma) = \left(
+\begin{array}{ccccc}
+1 & 0 & 0 & 0 & 0\\
+\delta\sigma & 1 & 0 & 0 & 0\\
+0 & 0 & 1 & 0 & 0\\
+0 & 0 & 0 & 1 & 0\\
+0 & 0 & 0 & 0 & 1\\
+\end{array}
+\right)
+\eeq
+and that no other file attributes are altered by this operation.
+Show that if $\hat I$ is the identity matrix, then we can write (for convenience)
+\beq
+\hat M_f(\alpha) = \hat I + \hat{\alpha},
+\eeq
+where $\alpha$ is the matrix generator of an appendage $\alpha$. Thus
+we see the relative change to the file attribute vector.
+
+\item What happens if the file does not exist before applying this operation $\hat M_f$?
+
+\item Is the operation $\hat M_f$ idempotent?
+\item Does this operation commute with $\hat C$ and $\hat P$? Do we
+need to insist on any other constraints to make this true?
+\item Do different modifications to the same file commute with one another?, i.e. what is:
+\beq
+[\hat M_f(\alpha),\hat M_f(\beta)]?
+\eeq
+\item Do different modifications to different files commute with one another?
+\beq
+[\hat M_f(\alpha),\hat M_{f'}(\beta)]?
+\eeq
+
+\item In cfengine we have the operator {\tt AppendIfNoSuchLine}
+which can be interpreted as a conditionally constrained $\hat M$ (call it
+$\hat m$).
+This operator has the form
+\beq
+\hat m_f =\left\{
+\begin{array}{ll}
+\hat I+\hat{\delta\sigma} & \mbox{if $\delta\sigma \not\subset\sigma$}\\
+\hat I  & \mbox{if $\delta\sigma \subset \sigma$}.
+\end{array}
+\right.
+\eeq
+where $\sigma$ is understood to be the current contents of the file
+prior to operation. Is this operation idempotent? Is it convergent?
+
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+\begin{exercise}
+This exercise summarizes the foregoing exercises.
+\begin{enumerate}
+\item If you were writing a new tool for automatically configuring
+and maintaining devices with special properties what properties would you 
+need to secure of this tool?
+
+\item What is the difference between the properties of idempotence and
+convergence?
+
+\item In the configuration management tool cfengine, operators are
+purposely made to be convergent wherever possible. The operators
+can also be made to commute to avoid ordering problems.
+Some authors have proposed an alternative to having many commuting
+operators by suggesting that any maintenance should begin by
+reinstalling the system from a fixed image and then applying configuration
+changes in a strict order to guarantee the outcome. They call this
+approach {\em congruence}, i.e. the correctness of policy configuration
+depends on the precise order in which the operations are performed from
+a known state.
+\begin{itemize}
+\item Convergence: $\hat C(\sigma), \hat P(r,w,x),\hat m(\delta\sigma), \ldots$ (Many operators)
+\item Congruence: $\hat T(\sigma+\delta\sigma,r,w,x,....)$ (One big operator)
+\end{itemize}
+\begin{enumerate}
+\item Are these alternatives both idempotent?
+\item Is either one of these methods more reliable than the other? 
+\item Is either one
+more correct than the other? 
+\item Can both of these methods be used
+`on the fly' while devices are in operation?
+\item Given that regular maintenance is necessary, which of these approaches
+does the least violence to the system?
+
+\item The Simple Network Management Protocol (SNMP) which is used for
+monitoring and configuring simple network devices has two operations:
+GET and PUT (like READ/WROTE or PEEK and POKE). Are these operations idempotent?
+Is there any problem with using SNMP to configure workstations and
+computers?
+\end{enumerate}
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\chapter{ Simple systems}
+
+
+
+\begin{exercise} 
+This question is about the fundamentals of systems: what constitutes a system and what
+makes one system better than another.
+\begin{enumerate}
+\item Explain the difference between a static and a dynamic system.
+\item Describe the necessary components of a dynamical system.
+\item What is meant by freedom and constraint? Identify the freedoms and constraints
+in the following systems:
+\begin{enumerate}
+\item A pendulum.
+\item Web client-server communication.
+\item A help-desk.
+\item A configuration engine (e.g. cfengine).
+\item An SNMP monitor (e.g. MRTG).
+\end{enumerate}
+
+\item Explain the relationship between an algorithm and a protocol, and explain
+how freedoms and constraints enter into these.
+
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise} \label{busopp}
+(NEW) In business modelling, one begins often with an activity chart,
+which is a crude finite state representation of a customer's behaviour
+within a system. This allows us to measure user behaviour as a pretext to
+capacity planning. Examine fig. \ref{bus}
+\begin{figure}[ht]
+\psfig{file=business.eps,width=12cm}
+\caption{An activity diagram for customers arriving at an online
+bank's website. Transition probabilities between the different activities
+are shown on arrows. Each state has a link to the exit state (x),
+which is not drawn.\label{bus}}
+\end{figure}
+
+\begin{enumerate}
+\item Write down the transition matrix for this set of states $\{e,h,s,v,g,c,b,x\}$.
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+\begin{exercise}
+(NEW) This problem is about a technique called Linear Programming. It
+is a simple technique, in two dimensions that used to be taught to
+school children. It teaches you to use a pen and paper to solve simple
+constraints.
+
+A service offering business runs two different services,
+$X$ and $Y$, for its customers; these have service rates of $x$ and $y$
+Gigabits per second.  It leases a network connection with a maximum
+capacity of $C$ Gigabits per second. The company pays $R$ euros per
+second for its network connection, so it has to earn at least this
+much to make a profit. We want to find out how to choose (prioritize)
+$x$ and $y$ so that we can program a DiffServ router to maximize
+the profit for the company.
+
+Consider fig. \ref{linear}. We do this by taking the contraints we know
+and drawing them as lines and excluded regions on a diagram like this.
+For instance, we know that
+\beq
+x + y \le C
+\eeq
+since the service levels cannot be larger than the transport limit. To
+represent this on the disgram, we draw the line $x+y = C$ and shade the
+region above it to show that it is excluded.
+
+\begin{figure}[ht]
+\begin{center}
+\psfig{file=linearprog.eps,width=6cm}
+\caption{Linear programming uses a diagram like this.\label{linear}}
+\end{center}
+\end{figure}
+
+
+\begin{enumerate}
+\item Draw the axes and exclude the region $x+y\le C$ as explained above.
+
+\item For dependency reasons, the company knows that the traffic to Y
+will be at least twice that to X, thus $y \ge 2x$. Plot the line $y=2x$
+on your diagram and shade the region under it.
+
+The clear (unshaded) region in this area represents the company's 
+``business plan'' or operating zone. As long as $x$ and $y$ are in this
+area, or on its boundary, the constraints are obeyed.
+
+\item Let $P_x,P_y$ be the price per completed transaction (euro/tr), let
+$D_x,D_y$ be the data per transaction (Gb/tr). The, using dimensional
+analysis, show that the rates of earning/income of each machine (euros/sec) 
+are $P_x x/D_x$ and $p_y y/D_y$.
+
+\item The company knows that it can charge up to three times as much for
+X as for Y, i.e. $P_x \le 3P_y$, so they want to maximize traffic stream $x$.
+Unfortuantely they can only limit the maximum level using the Diffserv router.
+If they limit $y$ to allow more $x$ in, they do not know that the demand for
+$x$ will fill the empty capacity. They must choose the price and maximum
+values of the streams to maximize their profits. Can they calculate
+a best answer?
+
+\item What is the condition for the company to make a profit?
+
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+
+
+\begin{exercise} 
+This exercise is about system architectures or structural properties
+of systems.
+\begin{enumerate}
+\item Compare the structure of a StarLAN network with the architecture of a
+Linux Beowulf cluster. What are the similarities and differences? (Discuss this in terms
+of the main elements of a system.) When would you choose these architectures, i.e. what
+tasks are they best suited to?
+
+\item What is meant by top-down and bottom-up design of a system? Comment on the use of
+these strategies for (a) system design and (b) system maintenance.
+
+\item What is meant by hierarchical organization? 
+Explain how the depth of a system hierarchy can affect the
+performance of a system.
+
+\item Abstraction is used in system design to separate independent issues from one another.
+Explain how a hierarchy achieves such a separation. Is the hierarchy the only
+model of separation of independent issues?
+
+\item What is meant by system normalization? Explain the purpose of normalization.
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+\begin{exercise} 
+This exercise is about system architectures or structural properties.
+\begin{enumerate}
+\item What is meant by a data structure? What is its relationship to systems?
+\item Explain how the organization of a system can affect the
+efficiency with which different types of input are processed. Give
+an example of a system that is designed to handle a special kind of
+input.
+\item How would one view a network design as a data structure? Explain how the use of
+an abstract data model can help in the design of a network.
+
+\item Compare an old-fashioned shared-bus Ethernet architecture (or Hub) with a StarLAN switched
+architecture and a wireless WLAN network. Assuming that a number of
+PCs are connected together by these two methods, comment on the
+freedoms and constraints in the two systems. Comment on the criteria
+you might use for determining which type of design would be best in a
+given situation.
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\chapter{Reading week}
+
+You should use this time to do some general reading in the book to
+enlarge your knowledge of the course materials and work through
+examples.
+
+\chapter{Diagrams and graphs}
+
+
+\begin{exercise} 
+(NEW) This exercise is about thinking of structural problems in terms
+of graphs. Graphs are a powerful way of analysing many qualitative and
+quantitative relationships.
+\begin{enumerate}
+\item A company has three clients for which it provides a service. Draw this relationship as a graph.
+\item The same company decides to outsource part of its business to another company. Modify your diagram to show this.
+\item After a while, the risk of relying on a single outsourcing company is found to be unacceptable and outsourcing is divided between two separate companies. Modify your graph to show this.
+\item Comment on how you might represent load-balancing in a graph, using weighted links. 
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise} 
+Encryption keys for private communication between users or systems are
+of two kinds: (i) shared keys (128 bytes), or (ii) public-private key
+pairs (1024 bytes + 8 bytes).
+\begin{enumerate}
+\item In order to communicate privately with (i), any pair of users must share
+a unique key. Show that if there are $N$ users who need to communicate potentially
+with every other user, a total of $N(N-1)/2$ keys is required.
+
+\item To communicate privately with public keys, show that each user needs only 2 keys,
+i.e. the total number of keys is $2N$.
+
+\item Calculate how many users (find $N$) such that it is worthwhile introducing
+public-private keys, i.e. before the number of shared keys is much
+larger than the number of public-private keys.
+
+\item Calculate how many users (find $N$) such that it is worthwhile introducing
+public-private keys, i.e. before the amount of memory used to store
+the shared keys is much larger than that required to store the of
+public-private keys.
+
+\item Comment on which of the two criteria above makes most sense.
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise} 
+(NEW) Find the centrality eigenvector for the transition matrix
+in exercise \ref{busopp}.
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise}
+This exercise is about determining the relative importance of nodes in
+a network.
+\begin{enumerate}
+\item Consider the graph:
+\begin{figure}[ht]
+\psfig{file=trivial.eps,width=4cm}
+\end{figure}
+Show that the graph has adjacency matrix
+\beq
+A = \left(
+\begin{array}{ccc}
+0 & 1 & 0\\
+1 & 0 & 1\\
+0 & 1 & 0\\
+\end{array}
+\right)
+\eeq
+
+\item Find, by hand, the eigenvalues $\lambda_i$ and 
+eigenvectors $\psi_i$ of this matrix, satisfying
+the secular equation
+\beq
+A \vec \psi_i = \lambda_i \psi_i.
+\eeq
+The principal eigenvalue is special; 
+explain how the components of this vector characterize the graph.
+
+\item Consider now a metropolitan area network of routers in the figure:
+\begin{figure}[ht]
+\psfig{file=nontrivial.eps,width=6cm}
+\end{figure}
+Find the adjacency matrix of this network and find its principal eigenvector.
+
+\item Assuming that all of the routers are connected to local networks
+that are approximately as active as all the others, rank the nodes
+according to their importance as communication hubs in the network.
+
+\item The remainder of this problem is about the interpretation of the
+eigenvector ranking. Explain how the local importance $I_i$ of each node $i$
+is proportional to the number of nearest neighbours that interface with it:
+\beq
+I_j &=& \sum_{i = {\rm neighbours~ of}~ j} 1\nonumber\\
+    &=& A \vec 1,
+\eeq
+where $\vec 1^{\rm T} = (1,1,1,...,1)$. Hence show that a weighted sum
+of neighbours with weights $\alpha_i$ for the $i$th neighbour, i.e.
+\beq
+\vec I = A \vec \alpha.
+\eeq
+Show that, if we weight the local importance of each node
+with the relative importance of its neighbours,
+i.e. $\vec \alpha \propto \vec I$, then we find the following self-consistent
+equation for $\vec I$:
+\beq
+A \vec I = \lambda \vec I,
+\eeq
+for some constant of proportionality $\lambda^{-1}$. Hence one
+concludes that $\vec I$ is both the importance ranking over all the nodes
+and the solution of the eigenvector equation, i.e. that the two are equivalent.
+
+\item How useful do you think this ranking is? What assumptions lie behind it?
+
+\item (Hard) The eigenvector equation has $N$ solutions if there are $N$ nodes.
+Can you see why the solution we want is the principal eigenvector?
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+
+
+
+\chapter{ A model of human-computer systems}
+
+\begin{exercise} 
+An antarctic research station measures that the signal strength of
+its satellite link varies during the course of a day according
+to the empirical formula
+\beq
+S(t) = S_0(1+\sin(2\pi t/24))
+\eeq
+where time is measured in hours GMT and $t=0$ is calibrated to 5:30 a.m GMT.
+
+The system administrator guesses that the rate of transfer of data 
+$R(t)$ via its satellite line varies with time in strict proportion
+with the signal strength: $R(t) \propto S(t)$.
+\begin{enumerate}
+\item Does the assumption that data rate is proportional to signal strength
+sound reasonable to you? Explain your answer.
+
+\item Based on his assumption, the system administrator scribbles down
+a formula for the data rate in {\em Giga-bytes per second}.
+\beq
+R(t) = R_0 (1+\sin(2\pi t/24)).
+\eeq
+If the maximum data rate is known to be 1 Giga-bit per second,
+find the value of $R_0$.
+
+\item To be certain of being able to download the evening's movie entertainment
+in time for its screening, the administrator needs to calculate how
+long the data transfer will take. He writes down the equation
+\beq
+d(t) = \int_{t_s}^{t_f} R(t')dt'
+\eeq
+for the amount of data $d(t)$ (in Giga-bytes) received as a function of the start time
+$t_s$ and final time $t_f$, on the cailbrated hour-scale, given that
+he starts downloading at time $t_s$. Explain the thinking behind this
+formula and explain why the system administrator has made a simple
+mistake, which has to do with measuring units.
+
+\item The administrator corrects his mistake and starts with
+\beq
+d(t) = 3600 \int_{t_s}^{t_f} R(t')dt'
+\eeq
+Suppose that the movie must be downloaded by 18:00 GMT; by solving
+this equation for $t_s$, calculate how long it takes to download 4
+Giga-bytes of data, and then 40 Giga-bytes of data. (Hint: be careful
+to convert times to the calibrated scale.)
+
+\item As more penguins start to run Linux, the total bandwidth available
+to the station has to be shared amongst mulitple customers and the
+station can only use one tenth of the total channel capacity. Recalculate
+the time taken for the download if the total channel capacity is reduced to
+i) $1/10$ and ii) $1/100$ of the total capacity. How would the answers
+be different if the film was to be downloaded for 21:00 GMT.
+
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+\begin{exercise} 
+A system administrator is trying to decide when she should take a backup of
+the system server. By measuring the number of client connections to the server
+over a number of weeks, she comes up with the following formula for the {\rm average}
+number of connections to the server.
+\beq
+N(t) = 10^4 \left(\frac{3}{2}+\sin\left(
+\frac{2\pi t}{24}+\phi
+\right)\right)
+\eeq
+where $\phi$ is a constant phase angle which she will use to fit the curve to
+her observations.
+\begin{enumerate}
+\item The number of connections is an integer, but the sine function is a continuous
+function. Explain why this makes sense for the average number of connections.
+
+\item The maximum download activity is observed to occur in the middle of the
+day at 12:00 noon ($t=12$). By differentiation, find the maxima and minima of
+$N(t)$ and determine the value of $\phi$ such that the maximum value of
+$N(t)$ is at 12 noon.
+
+\item The system administrator decides to take a backup of the system when there
+is least activity. Suggest a time to take a
+backup, based on the formula.
+
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise} 
+This exercise is about arbitrary decisions made in deciding policy.
+In modelling human-computer systems we are often required to make
+value judgements about different resources. In order to compare the
+different scales or `currencies' we must relate them to one another. This allows
+us to make trade-offs and decisions about strategy. There are no right
+answer here; this problem is meant to illustrate how difficult it is
+to be precise about human-motivated policy.
+\begin{enumerate}
+
+\item What is meant by the expression `time is money'? Can you formalize this expression mathematically?
+\item Suppose that knowledge/experience is represented in a database in  a binary tree data structure. This
+knowledge is used as a cache to avoid costly computation (e.g. a web browser, a DNS resolver or a numerical
+processor). Explain how you would go about describing the amount of CPU/network time saved as a function
+of the size of the cache.
+\item Suggest a formalization of the expression `security is the opposite of convenience'. Check that
+you answer makes sense. Criticize your expression, noting any problems or limitations.
+\item The convenience of a having all hosts in a network configured identically is often used to express
+an amount of time saved in setting up the machines. Suggest an expression for the convenience associated
+with having all hosts identical. Does this ``agree'' with your expression about security above?
+
+\item Is convenience for users the same as convenience for system administrators? Suggest a relationship
+between convenience for users and convenience for system administrators for some company of your choice.
+Can you think of an example of a company where the relationship is very different from your
+first example?
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+\begin{exercise} 
+This problem is about grading or ranking system qualities using arbitrary currencies as
+measures of integrity. This is a common practice in computer security.
+\begin{enumerate}
+\item In the Biba model of computer integrity one uses integrity levels as a currency
+for data and system security.  If data or parts of a system are
+contaminated by contact with something with a lower integrity level
+then the integrity level of the data must be downgraded.
+
+Consider a firewall model in which there is a ``secure'' region on the inside of the firewall
+and an ``insecure'' region outside. Users and systems need to access
+data on the inside of the firewall from outside. By assumption the
+integrity level outside is lower than that inside.
+\begin{enumerate}
+\item If users or hosts outside the firewall can read information from the secure area, is
+the integrity of the information downgraded outside the firewall?
+
+\item If users or hosts outside the firewall can write information to the secure area, is
+the integrity of the information downgraded inside the firewall?
+\item Explain the usefulness and limitations of a firewall, especially when used in
+conjunction with a Virtual Private Network that tunnels through it?
+\end{enumerate}
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+
+
+\chapter{Integrity, information and noise}
+
+\begin{exercise}
+This problem is about the technical meaning of informational entropy and how it
+applies to noisy measurements.
+\begin{enumerate}
+\item Explain what is meant by the uncertainty of an observation or measurement.
+\item How is the Shannon entropy defined for a data stream with $C$ possible measurement classes?
+\item How do these classes of measurement relate the to information in a coded message?
+
+\item Explain what is meant by a high entropy message and a low entropy message.
+
+\item Suggest two different ways in which $C$ symbols can be coded for transmission
+by optical fibre.
+
+\item The usual model of signal noise is to assume that the true signal can be separated
+from a background of noise that we know little about. It is assumes that the
+sources of noise are independent, i.e. that they make orthogonal contributions to the
+uncertainty of signal measurement,
+\beq
+{\rm Error}^2 = \Delta q_1^2 + \Delta q_2^2 + \ldots + \Delta q_C^2.
+\eeq
+Explain the reasoning behind this formula.
+
+\item One way to model this noise is to say that we wish to assume as little as
+possible about it, i.e. we have maximal uncertainty but we know that it has
+a limited extent. This leads us to a model of Gaussian noise.
+
+Use the method of Lagrange multipliers to find the noisiest
+probability distribution $p_i$ of symbol errors $\Delta q_i = q_i -
+\overline q_i$, subject to the condition that the noise falls within a
+bandwidth of approximately $\pm\sigma$ of the true signal $\overline
+q_i$. i.e.  Maximize the Lagrangian function
+\beq
+L = -\sum_{i=1}^C p_i\ln p_i - \alpha\left(\sum_{i=1}^C p_i -1\right)
+-\beta \left(\sum_{i=1}^C p_i (q_i - q_i)^2/\sigma^2 -1\right)
+\eeq
+Hence show that the distribution that arises from many independent sources of noise
+is the Gaussian (normal) distribution.
+
+\item Consider the continuum limit of the measurement classes, i.e. $C\rightarrow \infty$,
+where the summation over $i$ is replaced by an integral over a range of $q$.
+Use the argument in section 15.6 to derive the well-known Shannon formula for the capacity
+of a noisy channel:
+\beq
+C = B \log \left(1+\frac{S}{N}\right).
+\eeq
+where $S$ is the signal power, $N$ is the noise power and $B$ is the bandwidth of
+the signal classes.
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+\begin{exercise}
+(Difficult) This exercise is about the interpretation of entropy to system integrity.
+\begin{enumerate}
+
+\item Show that the Shannon entropy $H$, multiplied by $N$, can be interpreted
+as the average length of the label that is needed to uniquely
+distinguish a message from all others of length $N$, within a fixed
+alphabet, i.e. that it .
+
+In other words, this says that $NH$ tells us the shortest number of
+symbols in which we can describe the exact message assuming one has an
+appropriate coding scheme that maps messages into strings
+of the specified alphabet. Hence it is the
+amount of non-redundant information in the message.
+
+
+\item In computer security, one often speaks about the entropy of an
+encryption key. What is meant by this terminology?
+
+\item In what sense is system policy a message that is to be transmitted?
+
+\item Suggest a simple alphabetic reclassification to compress the message:
+\begin{verbatim}
+BIGCATBIGCATBIGCAT
+\end{verbatim}
+by a factor of 3.
+
+\item The entropy (log base $m$) represents the uncertainty per message symbol, in units of `digits belonging to an alphabet of $m$' symbols.
+Calculate the $\log_6$ entropy of the message above. What is the
+uncertainty per symbol of the message? Explain what this means.
+
+\item If the entropy $H$ can tell us about the compression of a message,
+what does this tell us about the last example?  
+Take the $log_6$ entropy and multiply it by the length of the message
+above. Is the result shorter than the original message above? (Explain
+your result.)
+
+\item Entropy assumes that the order of symbols in a string 
+must be distinguished
+to capture the information in a message. Suppose we
+form an alphabet of $C$ commuting, convergent operators. What is the
+shortest number of symbols that can faithfully transmit {\em any}
+message from this alphabet to an unconfigured computer?
+
+What is the total number of different messages one can create from
+$C$ symbols
+\begin{itemize}
+\item If order matters?
+\item If order and repetition  do not matter?
+\end{itemize}
+
+\item Consider a system in which there are eight possible policy rules that
+can be violated. The faults are called $\Delta_1,\Delta_2,...\Delta_8$.
+Over time, a statistical observation tool (like cfenvd) observes that
+these faults occur with the following frequencies:
+$$
+p(\Delta) = \left(\frac{1}{2},\frac{1}{4},\frac{1}{8},\frac{1}{16},\frac{1}{64},\frac{1}{64},\frac{1}{64},\frac{1}{64} \right)
+$$
+in strings of the form:
+$$
+\Delta_1\Delta_2\Delta_1\Delta_3...
+$$
+The mean time before failure is $\langle T\rangle$ (or average time
+between $\Delta_i$).
+
+Consider a set of operations that counters each of these problems
+$\hat O_1,\hat O_2, ...$. It is rarely possible to detect change and
+apply these until a certain time has elapsed, so imagine that several
+faults can have occurred in the time it takes to
+schedule maintenance (Mean Time To Repair or MTTR). Faults that occur
+most frequently should be performed most often, but multiple repairs
+can be eliminated when performing scheduled (not event driven)
+maintenance.  This allows us to compress the work to be done by
+avoiding multiple operations of the same type, at the expense of the
+prolonged uncertainty.
+
+If $T_m$ is the time between maintenance checks, show that the average
+number of faults to be corrected is the uncertainty of the system over
+the time: $$ {\rm Maintenance-length} = H\langle T_m/T\rangle.  $$
+This is shorter than the full average fault number $N =\langle
+T_m/T\rangle$ of full symbols.  Explain why.
+
+Based on the previous questions, can these information-compressed
+maintenance operations be shorter than a maintenance procedure based
+on commuting, convergent operations? 
+
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+
+
+\chapter{Arrivals and queues}
+
+\begin{exercise} 
+Explain what is meant by a time-series.
+Explain what is meant by the Hurst exponent for a time-series. What does it show?
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise} 
+This question is about task management and service handling.
+It concerns the efficiency of handling services by queueing, and the
+deployment of resources in parallel to cope with demand.
+\begin{enumerate}
+\item Explain what is meant by the term ``arrival process''. What is the most
+common model for such a process?
+
+\item Consider the arrival of queries to an ISP help desk. The arrival process
+contains both long and short jobs in random order. How would you
+determine the type of the arrival process? What do you think is the
+best way to model such a process to discuss the efficiency of the
+queueing?
+
+\item Two ISPs compete for customers by claiming to have an efficient help service.
+The two companies decide to organize their services differently (see
+figure).
+\begin{figure}[ht]
+\psfig{file=queues.eps,width=8cm}
+\end{figure}
+Both ISPs have six persons staffing their phone lines. ISPA decides to
+use a telephone menu to divide queries into different types in
+advance, so that a specialist can deal with each problem. ISPB decides
+that it is best to keep all lines open for all queries.
+
+Use you intuition to argue which of these two methods is most
+efficient. Hint: what happens if there are just three calls in the
+queue all on the same specialist subject?
+
+\item ISPA and ISPB both receive an average of
+0.9 calls per minute. The average service time at both companies is 5
+minutes per call.
+
+Assume the arrival processes are Poissonian in nature.  Explain how
+you would compare the efficiency of these two queueing methods
+formally.  Which system is superior?
+
+\item Calculate the utilizations of the help desks of ISPA and ISPB.
+
+\item Suppose that arrivals follow a long-tailed distribution for
+inter-arrival times (non-Poissonian).
+What does this mean? How might it affect the results?
+
+\item Compare the conclusions you have found in this exercise with the 
+folk theorems for redundancy in chapter 18.
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\chapter{Workflow models}
+
+\begin{exercise} 
+This exercise is about the scalability of system management. It relates to the models
+described in section 18.5-18.6.
+
+Suppose errors occur in $N$ devices in the manner of a random arrival process that
+is equally likely to affect all devices (hosts, routers etc) in a network.
+\begin{enumerate}
+\item If the average failure rate for the total network is $I$ faults per second, what
+is the average failure rate {\em per device}.
+\item Suppose that we centralize the administration of all the nodes so that a system
+administrator or automatic system (like an SNMP monitor) deals with all the errors that occur.
+Suppose that this centralized administrator has a work capacity of $C$ repairs per second,
+how much work can be done on each host on average?
+
+\item We call the behaviour of the expressions as a function of the number of devices $N$
+the scaling behaviour of the model. Explain what is ``good'' scaling behaviour
+and what is ``bad'' scaling behaviour in a maintenance model.
+
+\item Explain the expression net failure rate of systems over time in eqn. (18.55).
+What does this expression really mean? What are its limitations?
+
+\item Suppose the probability of the central controller being able to communicate with a device
+is less than 1, i.e. communications are unreliable. How does this affect the scalability of the
+model?
+
+\item Suppose that every device in a network receives its policy from a central
+location, but is able to carry out repairs by itself. What is the scalability of this
+model?
+\end{enumerate}
+\end{exercise} 
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise} 
+Consider the directory service LDAP. 
+\begin{enumerate}
+\item What function does it perform?
+
+\item Discuss this system from the perspective of the basic system principles.
+Mention redundancy, hierarchy, dependency. 
+
+\item What principles are at
+work in LDAP? 
+
+\item If you were to verify how effective this software is
+at performing its task, how would you test this by experiment?
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise}
+This problem relates maximization of resources to graphical methods of analysis-
+
+The network connectivity of $N$ hosts can be written
+\beq
+\chi = \frac{1}{N(N-1)} h^{\rm T} A h
+\eeq
+has a maximum value when all hosts are connected and are available for
+communication. Consider a pervasive computing network in which the available
+channels of communication are described by the adjacency matrix $A$.
+Use the method of Lagrange multipliers to maximize $\chi$ with respect
+ to $h^{\rm T}$ subject to the condition $h^{\rm T} h = H$, i.e. the
+total availability of resources in the network is fixed.
+Show that $\chi$ is maximized when
+\beq
+A \vec h = \lambda \vec h,
+\eeq
+for some constant $\lambda$.
+
+Use Octave, Mathematica or some other tool to find $\hat h$ and $\chi$
+for the network:
+\begin{figure}[ht]
+\psfig{file=connect.eps,width=5cm}
+\end{figure}
+i.e.
+\beq
+A = \left(
+\begin{array}{ccccccc}
+0 & 0 & 1 & 0 & 0 & 0 & 0\\
+0 & 0 & 1 & 0 & 0 & 0 & 0\\
+1 & 1 & 0 & 1 & 1 & 0 & 0\\
+0 & 0 & 1 & 0 & 0 & 0 & 0\\
+0 & 0 & 1 & 0 & 0 & 1 & 1\\
+0 & 0 & 0 & 0 & 1 & 0 & 0\\
+0 & 0 & 0 & 0 & 1 & 0 & 0\\
+\end{array}
+\right).
+\eeq
+Which node in this network needs to be able to handle to greatest traffic load?
+
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+
+
+\begin{exercise} 
+(Difficult) This problem is about algebraic modelling collaboration
+and dependency in systems. The aim here is to see how simple
+mathematical expressions reflect properties about systems and reveal
+features that are perhaps not obvious to us at the outset. It will
+also reveal some limitations: if we are too simplistic, then the
+results will not necessarily behave as we expect. The value of this
+kind of exercise is that it helps analysts and researchers to think
+and understand.
+
+\begin{enumerate}
+\item Show that, if we constrain two variables $q_1$ and $q_2$
+so that their product is fixed, we create a {\em dependency}
+between the variables. Hint: plot $q_1q_2 = k$, for various values
+of $k$ on a plot of $q_1$ versus $q_2$.
+
+\item Consider the following graph of two communicating systems.
+\begin{figure}[ht]
+\psfig{file=twin.eps,width=5cm}
+\end{figure}
+The arrows represent work-flow and the arrows indicate the direction
+of the flows. The real, positive adjacency matrix of this simple graph is
+\beq
+A = \left(
+\begin{array}{cc}
+\alpha_1 & \beta\\
+\beta & \alpha_2\\
+\end{array}
+\right)
+\eeq
+We define a workload vector $\vec L = \left(\begin{array}{c}
+L_1\\L_2
+\end{array}\right)$ and the productivity (by analogy with connectivity)
+as $P = \vec L^{\rm T} A \vec L$.
+Write down the productivity and show that it is a scalar.
+
+\item What is the minimum value of $P$. 
+\item What is the maximum value of $P$?
+\item Use the method of stationary variation on the productivity to
+see what it tells you about the non-trivial solutions for $\vec L$.
+Show that non-trivial solutions exist only if $\beta^2 = \alpha_1\alpha_2$.
+Bearing in mind that the two nodes are independent of one another,
+what is the significance of this solution?
+
+\item Let us now couple to two systems together formally, making them dependent on one another.
+Consider now the same system with the additional constraint $L_1 L_2
+\le k$, some some constant $k$.  Use the Lagrange method with
+multiplier $\lambda$ to maximize
+\beq
+{\cal P} =  \vec L^{\rm T} A \vec L - \lambda (L_1L_2 - k)
+\eeq
+and show that this leads to the coupled linear equations
+\beq
+A  \left(\begin{array}{c}
+L_1\\L_2
+\end{array}\right) = \lambda \left(\begin{array}{c}
+L_2\\L_1
+\end{array}\right)
+\eeq
+Find the values of $\lambda$ for which non-trivial solutions exist for
+$L_1,L_2$.  Show that there are two solutions $(L_1,L_2) \propto 
+(\pm\alpha_2,\alpha_1)$.
+
+\item Show that the stationary value of the productivity is
+\beq
+P \propto \beta L_1L_2.
+\eeq
+Suggest a reason why the result is proportional to $\beta$.  Comment
+on the symmetry of this answer with respect to $\alpha_1$ and
+$\alpha_2$.
+
+
+\item Repeat the calculation for a graph in which the work-flow between
+the hosts travels only one way, i.e. 
+\beq
+A = \left(
+\begin{array}{cc}
+\alpha_1 & \beta\\
+0 & \alpha_2\\
+\end{array}
+\right).
+\eeq
+Draw the graph of this matrix and comment on the values. What does it
+tell you? Does it make sense? The graph is now asymmetrical with
+respect to $\alpha_1$ and $\alpha_2$.  Find the stationary value of
+the productivity and determine which host drives the productivity? If
+you were to spend more money on one of the hosts in this setup, which
+one would you choose?
+
+Comment on this analysis. What does the mathematics show you? What are
+the limitations of the model.
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+
+\chapter{Decision theory}
+
+
+\begin{exercise}
+This problem is about the theory of rational decision making.
+\begin{enumerate}
+
+\item Explain in your own words what is meant by a mathematical game.
+
+\item Explain what is meant by `payoff' or `utility'. What role do currency systems
+play in defining payoff?
+
+\item Explain how a two-person game can be represented as a {\em pair} of matrices.
+
+\item Examine the game in example 169. Explain, with a critical eye, 
+how the values are arrived at. If you disagree with the values in this matrix,
+explain why and argue for your own values.
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise}
+\begin{enumerate}
+
+\item Use the Gambit game software to analyze the model of software
+updating in example 169 in section 19.4. Look for the Nash equilibria
+of the game. If you have modified the game, in the previous exercise,
+work out the solutions of both versions and compare them.
+
+Note, the Gambit software uses the term `outcomes' for the payoff. You
+should choose the normal form for game modelling.
+
+\item Try modifying and extending the model to investigate how stable the
+equilibrium points are to changes in the precise values. Explain your
+thinking.
+
+\item Evaluate and comment on the usefulness of the procedure you have
+just undertaken. How reliable is it in making decisions? How realistic is it
+as a model of rational decision making? How might you use it in practice?
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\begin{exercise}
+Think of a decision situation of your own that can be represented as
+a two person game and use the Gambit software to find a solution
+to the game. Interpret the results -- you will be presenting this
+example to the class. 
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+
+\chapter{Game theory}
+
+\begin{exercise}
+These questions are to guide your reading. You do not need to submit them.
+\begin{enumerate}
+
+\item What does it mean to say that a game is `zero-sum'?
+
+\item Describe the so-called Prisoner's Dilemma game. Is it a zero-sum game?
+Explain your answer.
+
+\item Mention some applications of the game.
+
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\end{solution}
+
+
+\end{document}

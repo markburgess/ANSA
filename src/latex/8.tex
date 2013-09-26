@@ -1,0 +1,316 @@
+
+\documentclass{beamer}
+
+\newtheorem{myrule}{Rule}
+
+\def\beq{\begin{eqnarray}}
+\def\eeq{\end{eqnarray}}
+\def\2{\frac{1}{2}}
+
+
+
+\mode<presentation>
+{
+ \usetheme{Warsaw}
+%\usecolortheme[rgb={0,0.7,0.1}]{structure}
+%  \usetheme{default}
+%  \usetheme{Boadilla}
+%  \usetheme{Madrid}
+%  \usetheme{Pittsburg}
+%  \usetheme{Boadilla}
+
+  % or ...
+
+
+  \setbeamercovered{transparent}
+  % or whatever (possibly just delete it)
+}
+
+
+\usepackage{epsfig}
+\newtheorem{axiom}{Axiom}
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+\title[Game Theory...] % (optional, use only with long paper titles)
+{Rational Decisions}
+
+
+\author[] % (optional, use only with lots of authors)
+{MB}
+% - Give the names in the same order as the appear in the paper.
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+\institute[Oslo University College] % (optional, but mostly needed)
+{
+  Department of Computer Science\\
+  Oslo Univeristy College
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+}
+
+\date[MS007A] % (optional, should be abbreviation of conference name)
+{November 2007}
+
+\subject{Rational Decisions}
+% This is only inserted into the PDF information catalog. Can be left
+% out. 
+%\usecolortheme{beetle}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Rational decision}
+
+\begin{itemize}
+\item Chapter 19.\vspace{0.2cm}
+
+\item How to make rational decisions, i.e. how to justify conclusions
+by formalizing questions and answers.\vspace{0.2cm}
+
+\item Optimization of goals described by policy.\vspace{0.2cm}
+
+\item We must normally specify 
+policy to eliminate arbitrariness in decisions.\vspace{0.2cm}
+
+\item Two steps:\vspace{0.2cm}
+\begin{itemize}
+\item Use models built so far to understand how processes occur
+\item Add a {\bf value judgement} (function) about the behaviour
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+%%
+
+\begin{frame}
+\frametitle{Classification}
+
+\begin{itemize}
+\item Decisions require us to categorize or classify options (Bacon / ITIL). Set classification
+like in cfengine.\vspace{0.2cm}
+
+{\tt\small
+linux|solaris::\\
+~\\
+~~~~~   rule...}
+
+\item Decisions can involve conflicting interests. How do these compete?
+How do we resolve the competition rationally?\vspace{0.2cm}
+
+\item Simplest decisions are discrete yes/no Boolean
+decisions (AND/NOT/OR). We know these from programming.\vspace{0.2cm}
+
+\item Continuous, value-based decisions must be decided:\vspace{0.2cm}
+\begin{itemize}
+\item Value / currency based.
+\item Payoff, utility, outcome
+\item Algebra of optimization
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+%%
+
+\begin{frame}\frametitle{Multiple possibilities}
+
+\begin{itemize}
+\item ``Conflicts of interest''\vspace{0.3cm}
+
+\item What if more than one ``right'' answer?\vspace{0.2cm}
+
+\item Weight or rank the importance of the possibilities using expected
+payoff (as in graphs).\vspace{0.2cm}
+
+\item Might end up with a single answer or several equally good answers.\vspace{0.2cm}
+
+\begin{itemize}
+\item Choose one by policy?
+\item Choose a mixture?
+\end{itemize}
+
+\item We can deal with these issues using {\bf game theory}
+\end{itemize}
+\end{frame}
+
+%%
+
+\begin{frame}\frametitle{Games}
+
+\begin{itemize}
+\item A game is a competition between $N$ players.\vspace{0.2cm}
+
+\item The theory of games is about competition between different goals or interests
+for a common resource. e.g. two player games like chess.\vspace{0.2cm}
+
+\begin{itemize}
+\item Goals or interests become ``players''.
+\item Player N wins higher score the closer (s)he gets to policy.\vspace{0.2cm}
+\end{itemize}
+\item We shall focus on 2-player games. This is hard enough.\vspace{0.2cm}
+
+\item With a little imagination, we can go a long way with 2 player games.\vspace{0.2cm}
+
+\item As with all models, there are discrete and continuous forms.
+\end{itemize}
+\end{frame}
+
+%%
+
+\begin{frame}\frametitle{Discrete, extensive form of games}
+
+\begin{itemize}
+\item Make a {\bf decision tree} of every possible action for every player at every move.
+
+\begin{itemize}
+\item Very complex (micromanagement).
+
+\item Add up the payoffs for each path through the game to find the best compromises,
+given that each player is trying to do the same.
+\item Advantage is we can retain the order of decisions.
+\end{itemize}
+
+\item Disadvantages
+\begin{itemize}
+\item Complex model. 
+\item Expensive to make. 
+\item More details than we know?\vspace{0.2cm}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Extensive form of game}
+\epsfig{file=extensive.eps,width=10cm}
+\end{frame}
+
+%%
+
+\begin{frame}
+\frametitle{Continuum (averaged) strategic form}
+
+\begin{itemize}
+\item Also called the {\bf normal} form.\vspace{0.2cm}
+
+\item Like a ``spreadsheet'' for valuating competing alternatives\vspace{0.2cm}
+
+\item Deals only with the main branches of the tree.
+(This is most useful for us)\vspace{0.2cm}
+
+\item Lump together actions that form single pathways into {\em classes} of play-behaviour.\vspace{0.2cm}
+
+\item High level management (cheap).\vspace{0.2cm}
+
+\item Order of decisions is lost -- both players are considered to act at the same
+time (like a duel).
+\end{itemize}
+\end{frame}
+
+%%
+
+\begin{frame}\frametitle{Payoff matrix $\Pi$ -- strategic form}
+
+\begin{itemize}
+\item Matrix of possible payoffs for each player, given different combinations of 
+stategy decisions.
+\end{itemize}
+
+\psfig{file=game.eps,width=4cm}
+
+
+\begin{itemize}
+\item Player 1: $A,B,C$
+\item Player 2: $\alpha,\beta,\gamma$
+
+\item Players can also use ``mixed strategies''
+
+ $c_1A+c_2B+c_3C+...$ etc
+
+\item Could be mixed during one game, or over several ``plays''.
+\end{itemize}
+\end{frame}
+
+%%
+
+\begin{frame}\frametitle{Example game matrix}
+
+\begin{center}
+\rm
+\begin{tabular}{l|c|c|c|}
+ & Security & Bug in   & Missing \\
+ & hole     & function & function\\
+\hline
+{\small Upgrade version now} & (10,5) & (10,0) & (5,-5)\\
+{\small Test then upgrade}   & (5,5)  & (3,9)  & (0,8)\\
+{\small Keep parallel versions}   & (-10,5)& (-1,10) & (0,10)\\
+\end{tabular}
+\end{center}
+
+
+Payoffs need to be chosen ``rationally''. This is the crux.
+Can often be subjective, so be careful.
+\end{frame}
+
+%%
+
+
+\begin{frame}\frametitle{Making the optimal decision}
+
+\begin{itemize}
+\item A ``solution'' of the game is a specification of optimal
+strategies for each player and the value received by
+each player when they behave rationally.\vspace{0.2cm}
+
+\item Both players are trying to maximize their payoff at the same
+time.\vspace{0.2cm}
+
+\item Saddle-points and equilibria for zero-sum.
+\end{itemize}
+\end{frame}
+
+%%
+
+\begin{frame}
+\frametitle{Solution methods}
+
+\begin{itemize}
+\item If $\Pi_1+\Pi_2 = 0$ (zero sum game), the game is solved by ``minimax''.\vspace{0.2cm}
+
+\item There is a ``best answer'' if the game has a saddle-point, otherwise there
+is only a combination of answers that gives best result.\vspace{0.2cm}
+
+\item If $\Pi_1+\Pi_2 = [{\rm const}_{ij}]$ have to use more general equilibrium
+ideas -- e.g. Nash equilibrium.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Summary}
+
+\begin{itemize}
+\item Formulate a decision in terms of some scale that can be measured or modelled\vspace{0.2cm}
+
+\item Try to formulate a policy for judging the value of the answer to some goal\vspace{0.2cm}
+
+\item Maximize the value of the outcome, possibly with competing interests\vspace{0.2cm}
+
+\item Find stable balance points between all interests (the solution)
+\end{itemize}
+\end{frame}
+
+
+
+\end{document}

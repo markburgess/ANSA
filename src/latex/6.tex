@@ -1,0 +1,148 @@
+\documentclass{slides}
+
+\title{Week 7: A model of human-computer systems}
+\usepackage{psfig}
+
+\begin{document}
+\maketitle
+
+
+\slide{Synthesis...}
+
+We should put together the building blocks we have been working on
+to form a model of a human-computer system as a {\em dynamical system}.
+
+Freedoms: Resources, flows, change, location, time, capacity for work etc..
+
+Constraints: Network topology, hardware limitations, policy, sufficient rates of change?
+
+We need to use currency relations, or dimensional analysis to relate the
+various fuzzy observables that we used to express human needs, e.g. ``security''
+and ``convenience'' etc..
+
+
+\slide{Evolution of the system}
+
+Change occurs in a system either due to development of programmed
+rules or due to changes from the environment and users.
+
+\psfig{file=loop.eps,width=14cm}
+
+\slide{State}
+
+We say that the state of configuration changes or evolves.
+
+The integrity of the system means that the system should not change
+outside the constraints of policy.
+
+But...
+
+\slide{Unpredictability}
+
+This means that we cannot guarantee that changes will be policy
+conformant, or that the system will be policy conformant at
+any given moment.
+
+We need a process of {\em maintenance} or repair.
+
+We can only define policy of a host in relation to is {\em average}
+state, over intervals of time comparable to the maintenance process.
+
+\slide{Communication paradigm}
+
+This is a good abstraction for discussing all kinds of changes to a system
+by discrete operations.
+
+Every change can be thought of as the enactment of a message of symbols
+that represent operations. Changes might be deliberate (deterministic) or
+uncontrolled random (non-deterministic).
+
+Communication can be
+\begin{itemize}
+\item Autonomic: computer to computer, computer to device (disk,ram,net). 
+
+System time is measured by the looping of these processes.
+
+\item Human-computer: input, policy instruction
+
+\item Human-human: collaboration, team-work etc..
+
+\end{itemize}
+
+\slide{Signal and noise}
+
+We think of a system as talking to itself with a message that represents
+policy:
+
+\begin{itemize}
+\item Signal: policy conformant change.
+\item Noise: random change (unpredictable from environment)
+\end{itemize}
+
+\psfig{file=noisechannel.eps,width=14cm}
+
+Error correction of ``symbols'' -- system is unreliable (Section 15.2,15.5).
+
+\slide{Symbols}
+
+We identify an alphabet of symbols with operations (operators).
+
+Noise means that a policy string can be changed:
+
+$$
+\hat A\hat B\hat A\hat C \rightarrow \hat A\hat X\hat C\hat A
+$$
+
+Need to repair the $\hat X$.
+
+e.g. $\hat B$ means \verb+chmod 644 /etc/passwd+ $\hat X$ means \verb+chmod 664 /etc/passwd+
+
+\slide{Some notes and caveats}
+
+The model allows us to discuss change in a common way. 
+
+e.g. The arrival of an HTTP request causes a fault until it is repaired by
+serving the page back to requester.
+
+Tie this to service level agreements (SLA) for service or for configuration.
+
+\slide{Cause-effect}
+
+
+Faults might be complex phenomena, but solved easily by correcting a
+single symbol. 
+
+We have not identified what causes faults yet, only that if we implement
+and maintain all policy symbols, faults should go away.
+
+Have to do this regularly, or live with uncertainty. e.g. Can a security
+breach remain unfixed for a whole day?
+
+\slide{Incomplete policy}
+
+We cannot micromanage every detail of a system, so some changes
+can occur without violating policy, e.g. temporary files, ...
+
+Management should be cheap, else it is not management, it's system redesign!
+
+Later we shall quantify how much slack and error there is using information theory.
+
+
+\slide{Arrivals}
+
+Arrival processes / renewal processes.
+
+We must accept randomness and uncertainty.
+
+Can think of maintenance as a queue of service requests building up
+and being serviced one by one. e.g. a help-desk
+
+\slide{Networks}
+
+Points of failure (use loop detection and centrality to identify)
+
+Fault trees and networks.
+
+Too many constraints - so a system cannot work.
+
+\end{document}
